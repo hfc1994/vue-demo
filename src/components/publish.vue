@@ -20,18 +20,18 @@
       </transition>
       <div class="detail">
         <el-tabs type="border-card" @tab-click="clickTabs" :value="tabType">
-          <el-tab-pane label="我的收藏" name="one">
-            <div v-if="tabType === 'one'">
+          <el-tab-pane label="节点1" name="one">
+            <div v-show="tabType === 'one'">
               <model-view :type="type" :id="id" :name="name" :tabType="tabType"></model-view>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="我的模型" name="two">
-            <div v-if="tabType === 'two'">
+          <el-tab-pane label="节点2" name="two">
+            <div v-show="tabType === 'two'">
               <model-view :type="type" :id="id" :name="name" :tabType="tabType"></model-view>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="系统模型" name="three">
-            <div v-if="tabType === 'three'">
+          <el-tab-pane label="节点3" name="three">
+            <div v-show="tabType === 'three'">
               <model-view :type="type" :id="id" :name="name" :tabType="tabType"></model-view>
             </div>
           </el-tab-pane>
@@ -67,11 +67,11 @@ export default {
       type: ''
     }
   },
-  mounted: function () {
-    this.id = '10002'
-    this.name = 'oracle10002'
-    this.type = 'db'
-    this.$router.push({name: 'model', params: {'id': this.id, 'name': this.name, 'type': this.type}})
+  created: function () {
+//    this.id = '10002'
+//    this.name = 'oracle10002'
+//    this.type = 'db'
+//    this.$router.push({name: 'model', params: {'id': this.id, 'name': this.name, 'type': this.type}})
   },
   methods: {
     changeTreeBar: function () {
@@ -86,13 +86,7 @@ export default {
       }
     },
     loadModel: function () {
-      if (this.tabType === 'one') {
-        this.$router.push({name: 'model', params: {'id': '10001', 'name': 'mysql', 'type': 'db'}})
-      } else if (this.tabType === 'two') {
-        this.$router.push({name: 'model', params: {'id': '10003', 'name': 'postgresql', 'type': 'db'}})
-      } else {
-        this.$router.push({name: 'model', params: {'id': '10002', 'name': 'oracle', 'type': 'db'}})
-      }
+      this.$router.push({name: 'model', params: {id: '10001', name: 'mysql', type: 'db', tabType: this.tabType}})
     },
     clickTabs: function (tab) {
       if (tab.index === '0') {
@@ -102,14 +96,14 @@ export default {
       } else {
         this.tabType = 'three'
       }
-//      this.$router.push({ name: 'model', params: {id: '', name: '', type: ''} })
+      this.$router.push({ name: 'model', params: {id: this.id, name: this.name, type: this.type, tabType: this.tabType} })
     },
     handleNodeClick: function (data, node) {
       if (node.isLeaf) {
         this.id = node.parent.data.id
         this.name = data.name
         this.type = data.type
-        this.$router.push({ name: 'model', params: {'id': this.id, 'name': this.name, 'type': this.type} })
+        this.$router.push({ name: 'model', params: {id: this.id, name: this.name, type: this.type, tabType: this.tabType} })
       }
     }
   }

@@ -23,15 +23,11 @@ export default new Router({
         component: second
       }]
     }, {
-      path: '/second/:dataType/:num',
-      name: 'second',
-      component: second
-    }, {
       path: '/publish',
       name: 'publish',
       component: publish,
       children: [{
-        path: 'model/:name/:id/:type',
+        path: 'model/:type/:id/:name/:tabType',
         name: 'model',
         component: model
       }]

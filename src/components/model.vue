@@ -1,16 +1,52 @@
 <template>
   <div id="model">
-    <span>id:{{ id }}</span>
-    <span>type:{{ type}}</span>
-    <span>name:{{ name }}</span>
+    <span>{{ msg }}</span>
+    <div v-show="isShow">
+      <table v-if="tabType === 'one'">
+        <tr>
+          <th>节点ID</th>
+          <th>数据库类型</th>
+          <th>数据库名</th>
+        </tr>
+        <tr>
+          <td>{{ tabType }}</td>
+          <td>{{ type }}</td>
+          <td>{{ name }}</td>
+        </tr>
+      </table>
+      <table v-else-if="tabType === 'two'">
+        <tr>
+          <th>节点ID</th>
+          <th>数据库ID</th>
+          <th>数据库类型</th>
+          <th>数据库名</th>
+        </tr>
+        <tr>
+          <td>{{ tabType }}</td>
+          <td>{{ id }}</td>
+          <td>{{ type }}</td>
+          <td>{{ name }}</td>
+        </tr>
+      </table>
+      <table v-else>
+        <tr>
+          <th>节点ID</th>
+          <th>数据库ID</th>
+          <th>数据库名</th>
+        </tr>
+        <tr>
+          <td>{{ tabType }}</td>
+          <td>{{ id }}</td>
+          <td>{{ name }}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
-import ModelView from './modelView.vue'
-
+/* eslint-disable */
 export default {
-  components: {ModelView},
   name: 'model',
   data () {
     return {
@@ -18,7 +54,21 @@ export default {
       isShow: false,
       name: '',
       id: '',
-      type: ''
+      type: '',
+      tabType: ''
+    }
+  },
+  created () {
+    this.name = this.$route.params.name
+    this.id = this.$route.params.id
+    this.type = this.$route.params.type
+    this.tabType = this.$route.params.tabType
+    if (this.id === '') {
+      this.msg = '暂无有效数据'
+      this.isShow = false
+    } else {
+      this.msg = '信息如下'
+      this.isShow = true
     }
   },
   watch: {
@@ -33,8 +83,24 @@ export default {
         this.name = this.$route.params.name
         this.id = this.$route.params.id
         this.type = this.$route.params.type
+        this.tabType = this.$route.params.tabType
       }
     }
   }
 }
 </script>
+
+<style>
+
+table, td, th{
+  margin:0 auto;
+  border: solid 1px;
+  border-collapse: collapse;
+}
+
+#model{
+  left: 0px;
+  right: 0px;
+}
+
+</style>
