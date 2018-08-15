@@ -1,11 +1,11 @@
 <template>
   <div id="model">
     <span>{{ msg }}</span>
-    <div v-show="isShow">
+    <div v-show="isShow" id="table">
       <table v-if="tabType === 'one'">
         <tr>
           <th>节点ID</th>
-          <th>数据库类型</th>
+          <th>类型</th>
           <th>数据库名</th>
         </tr>
         <tr>
@@ -18,7 +18,7 @@
         <tr>
           <th>节点ID</th>
           <th>数据库ID</th>
-          <th>数据库类型</th>
+          <th>类型</th>
           <th>数据库名</th>
         </tr>
         <tr>
@@ -96,6 +96,14 @@ table, td, th{
   margin:0 auto;
   border: solid 1px;
   border-collapse: collapse;
+}
+
+td,th{
+  padding: 10px;
+}
+
+#table{
+  margin-top: 10px;
 }
 
 #model{
