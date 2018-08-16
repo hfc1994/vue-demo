@@ -9,6 +9,9 @@
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
           style="margin-left: 0px; margin-top: 15px" title="任务">
         </el-button>
+        <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-menu"
+          style="margin-left: 0px; margin-top: 15px;background-color: rgba(255, 255, 255, 0.57)" @click="popMsgBox" title="弹窗">
+        </el-button>
       </div>
       <transition name="fade">
         <div class="treebar" v-show="isShow">
@@ -105,6 +108,19 @@ export default {
         this.type = data.type
         this.$router.push({ name: 'model', params: {id: this.id, name: this.name, type: this.type, tabType: this.tabType} })
       }
+    },
+    popMsgBox: function () {
+      const h = this.$createElement
+      this.$msgbox({
+        title: '使用说明',
+        message: h('p', null, [
+          h('textarea', { style: 'width: 100%;height: 90px;'}, '测试弹窗功能所使用的文字')
+        ])
+      }).then( action => {
+        //测试发现，只有点击确定关闭才会有这个后续
+        //直接右上角“×”关闭不会触发此处
+        alert('后续')
+      })
     }
   }
 }
