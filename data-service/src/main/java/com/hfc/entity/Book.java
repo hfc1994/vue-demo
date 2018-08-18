@@ -1,0 +1,73 @@
+package com.hfc.entity;
+
+/**
+ * Created by hfc on 2018/8/18.
+ *
+ * @author hfc.
+ */
+public class Book
+{
+    private int id;
+    private int oid;
+    private String title;
+    private double scores;
+    private String prices;
+    private String publishing;
+    private String url;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getOid() {
+        return oid;
+    }
+
+    public void setOid(int oid) {
+        this.oid = oid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public double getScores() {
+        return scores;
+    }
+
+    public void setScores(double scores) {
+        this.scores = scores;
+    }
+
+    public String getPrices() {
+        return prices;
+    }
+
+    public void setPrices(String prices) {
+        this.prices = prices;
+    }
+
+    public String getPublishing() {
+        return publishing;
+    }
+
+    public void setPublishing(String publishing) {
+        this.publishing = publishing;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+}
