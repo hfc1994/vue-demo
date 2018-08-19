@@ -17,11 +17,21 @@ import java.util.Map;
 @Mapper
 public interface FilmMapper
 {
+    /**
+     * 用于向数据库写入单条film数据的接口
+     * @param film 需要写入的单条film数据
+     * @return 1/0，成功/失败
+     */
     @Insert("insert into film(id, oid, title, year, type, star, directors, " +
             "actors, commenter, duration, url) values (#{id}, #{oid}, #{title}, " +
             "#{year}, #{type}, #{star}, #{directors}, #{actors}, #{commenter}, #{duration}, #{url})")
     int insertFilm(Film film);
 
+    /**
+     * 用于向数据库批量写入film数据的接口
+     * @param films 需要批量写入的film数据
+     * @return 1/0，成功/失败
+     */
     @InsertProvider(type = FilmProvider.class, method = "batchInsert")
     int batchInsertFilm(List<Film> films);
 

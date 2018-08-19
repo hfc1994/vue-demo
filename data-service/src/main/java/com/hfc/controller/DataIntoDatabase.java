@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.hfc.dbOperations.service.FilmService;
 import com.hfc.entity.Film;
 import com.hfc.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +26,8 @@ import java.util.List;
 @RequestMapping("/data")
 public class DataIntoDatabase
 {
+    private static Logger LOGGER = LoggerFactory.getLogger(DataIntoDatabase.class);
+
     @Resource
     private FilmService filmService;
 
@@ -89,7 +93,7 @@ public class DataIntoDatabase
                         }
                         catch (Exception e)
                         {
-                            System.out.println(e.getMessage());
+                            LOGGER.error(e.getMessage(), e);
 
                             for (Film f : films)
                             {
@@ -100,7 +104,7 @@ public class DataIntoDatabase
                                 }
                                 catch (Exception ee)
                                 {
-                                    System.out.println("此处失败了一条");
+                                    LOGGER.error("此处失败了一条");
                                     fail++;
                                 }
                             }
@@ -119,7 +123,7 @@ public class DataIntoDatabase
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
             return 0;
         }
         finally
@@ -129,6 +133,7 @@ public class DataIntoDatabase
         }
 
         System.out.println("成功：" + success + ",失败：" + fail);
+        LOGGER.info("成功：" + success + ",失败：" + fail);
         return 1;
     }
 
@@ -142,7 +147,7 @@ public class DataIntoDatabase
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                LOGGER.error("释放资源失败!" + e.getMessage());
             }
         }
     }

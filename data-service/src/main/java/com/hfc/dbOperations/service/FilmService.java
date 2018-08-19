@@ -2,6 +2,8 @@ package com.hfc.dbOperations.service;
 
 import com.hfc.dbOperations.dao.FilmMapper;
 import com.hfc.entity.Film;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @Service
 public class FilmService
 {
+    private static Logger LOGGER = LoggerFactory.getLogger(FilmService.class);
+
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Resource
     private FilmMapper filmMapper;
@@ -28,7 +32,7 @@ public class FilmService
     public int batchInsertFilmTable(List<Film> films)
     {
         int iResult = filmMapper.batchInsertFilm(films);
-        System.out.println("一组" + films.size() + "条，写入成功");
+        LOGGER.info("一组" + films.size() + "条，写入成功");
         return iResult;
     }
 }

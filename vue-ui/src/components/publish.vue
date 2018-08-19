@@ -12,6 +12,9 @@
         <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-menu"
           style="margin-left: 0px; margin-top: 15px;background-color: rgba(255, 255, 255, 0.57)" @click="popMsgBox" title="弹窗">
         </el-button>
+        <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-menu"
+                   style="margin-left: 0px; margin-top: 15px;background-color: rgba(255, 255, 255, 0.57)" @click="fetchItemData" title="取数据">
+        </el-button>
       </div>
       <transition name="fade">
         <div class="treebar" v-show="isShow">
@@ -48,6 +51,7 @@
 /* eslint-disable */
 import modelView from './modelView.vue'
 import model from './model.vue'
+import {api} from './fetchData.js'
 
 export default {
   name: 'publish',
@@ -110,7 +114,7 @@ export default {
       }
     },
     popMsgBox: function () {
-      const h = this.$createElement
+      let h = this.$createElement
       this.$msgbox({
         title: '使用说明',
         message: h('p', null, [
@@ -120,6 +124,26 @@ export default {
         //测试发现，只有点击确定关闭才会有这个后续
         //直接右上角“×”关闭不会触发此处
         alert('后续')
+      })
+    },
+    fetchItemData: function () {
+      let msgbox = this.$msgbox
+      let h1 = this.$createElement
+      this.$msgbox({
+        title: '情况',
+        message: h1('p', null, [
+            h1('textarea', { style: 'width: 100%;height: 90px;'}, '即将要向数据接口请求数据了')
+        ])
+      }).then(action => {
+        api.getItemList().then(function (response) {
+          console.log(response.data)
+          msgbox({
+            title: '结果',
+            message: h1('p', null, [
+              h1('textarea', {style: 'width: 100%;height: 90px;'}, response.data[0].item)
+            ])
+          })
+        })
       })
     }
   }

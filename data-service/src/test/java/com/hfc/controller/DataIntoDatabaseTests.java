@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -20,6 +22,8 @@ import javax.annotation.Resource;
 //@WebAppConfiguration
 public class DataIntoDatabaseTests
 {
+    private static Logger LOGGER = LoggerFactory.getLogger(DataIntoDatabaseTests.class);
+
     @Resource
     private DataIntoDatabase did;
 
@@ -33,8 +37,11 @@ public class DataIntoDatabaseTests
     public void test()
     {
 //        DataIntoDatabase did = new DataIntoDatabase();
-        int iResult = did.insertIntoFilmTable();
-        System.out.println("写入结果：" + iResult);
+//        int iResult = did.insertIntoFilmTable();
+//        System.out.println("写入结果：" + iResult);
+        LOGGER.debug("测试写入日志");
+        LOGGER.info("测试写入日志");
+        LOGGER.error("测试写入日志");
     }
 
     @After

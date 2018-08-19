@@ -18,3 +18,4 @@ selenium-debug.log
 /data-service/target
 /vue-ui/dist
 /vue-ui/test
+/data-service/logs
