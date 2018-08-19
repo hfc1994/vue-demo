@@ -7,17 +7,17 @@ package com.hfc.entity;
  */
 public class Film
 {
-    private int id;
-    private String oid;
-    private String title;
-    private String year;
-    private String type;
-    private double star;
-    private String directors;
-    private String actors;
-    private int commenter;
-    private int duration;
-    private String url;
+    private int id = 0;
+    private String oid = "";
+    private String title = "";
+    private String year = "";
+    private String type = "";
+    private double star = 0;
+    private String directors = "";
+    private String actors = "";
+    private int commenter = 0;
+    private String duration = "";
+    private String url = "";
 
     public int getId() {
         return id;
@@ -91,11 +91,11 @@ public class Film
         this.commenter = commenter;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 

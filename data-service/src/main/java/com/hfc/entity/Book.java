@@ -7,13 +7,13 @@ package com.hfc.entity;
  */
 public class Book
 {
-    private int id;
-    private int oid;
-    private String title;
-    private double scores;
-    private String prices;
-    private String publishing;
-    private String url;
+    private int id = 0;
+    private int oid = 0;
+    private String title = "";
+    private double scores = 0;
+    private String prices = "";
+    private String publishing = "";
+    private String url = "";
 
     public int getId() {
         return id;

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by hfc on 2018/8/18.
@@ -21,8 +22,13 @@ public class FilmService
 
     public int insertFilmTable(Film film)
     {
-        int iResult = filmMapper.insertFilm(film);
-        System.out.println("iResult==" + iResult);
+        return filmMapper.insertFilm(film);
+    }
+
+    public int batchInsertFilmTable(List<Film> films)
+    {
+        int iResult = filmMapper.batchInsertFilm(films);
+        System.out.println("一组" + films.size() + "条，写入成功");
         return iResult;
     }
 }

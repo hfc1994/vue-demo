@@ -15,11 +15,11 @@ package com.hfc.entity;
  */
 public class ItemList
 {
-    private int id;
-    private String item;
-    private String item_id;
-    private int item_level;
-    private String item_pre;
+    private int id = 0;
+    private String item = "";
+    private String item_id = "";
+    private int item_level = 0;
+    private String item_pre = "";
 
     public int getId() {
         return id;

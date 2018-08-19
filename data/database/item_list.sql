@@ -1,0 +1,11 @@
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (1, '豆瓣', 'douban', 0, '0');
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (2, '豆瓣图书', 'book', 1, 'douban');
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (3, '豆瓣电影', 'film', 1, 'douban');
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (4, '猫眼', 'maoyan', 0, '0');
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (5, '猫眼电影', 'film', 1, 'maoyan');
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (6, '豆瓣音乐', 'music', 1, 'douban');
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (7, '安兔兔', 'antutu', 0, '0');
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (8, '安兔兔手机', 'phone', 1, 'antutu');
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (9, '鲁大师', 'ludashi', 0, '0');
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (10, '鲁大师手机', 'phone', 1, 'ludashi');
+INSERT INTO `item_list` (`id`, `item`, `item_id`, `item_level`, `item_pre`) VALUES (11, '鲁大师电脑', 'computer', 1, 'ludashi');
