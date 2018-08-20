@@ -25,7 +25,7 @@ public class FilmController
     @Resource
     private FilmService filmService;
 
-    @RequestMapping(value = "/queryGroupByYear/{numLimit}", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryFilmByYear/{numLimit}", method = RequestMethod.GET)
     public String queryFilmGroupByYear(@PathVariable(name="numLimit")int numLimit)
     {
         List<Map<String, String>> map = filmService.queryFilmGroupByYear(numLimit);
