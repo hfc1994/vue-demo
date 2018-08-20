@@ -52,16 +52,17 @@ export default {
     return {
       msg: '暂无有效数据',
       isShow: false,
-      name: '',
       id: '',
       type: '',
-      tabType: ''
+      tabType: '',
+      name: ''
     }
   },
   created () {
-    this.name = this.$route.params.name
     this.id = this.$route.params.id
-    this.type = this.$route.params.type
+    let tmp = this.$route.params.type
+    this.type = tmp.split("_")[1]
+    this.name = tmp.split("_")[0]
     this.tabType = this.$route.params.tabType
     if (this.id === '') {
       this.msg = '暂无有效数据'
@@ -80,9 +81,10 @@ export default {
       } else {
         this.msg = '信息如下'
         this.isShow = true
-        this.name = this.$route.params.name
         this.id = this.$route.params.id
-        this.type = this.$route.params.type
+        let tmp = this.$route.params.type
+        this.type = tmp.split("_")[1]
+        this.name = tmp.split("_")[0]
         this.tabType = this.$route.params.tabType
       }
     }

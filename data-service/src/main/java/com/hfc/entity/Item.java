@@ -13,7 +13,7 @@ package com.hfc.entity;
  * ---猫眼
  * ------猫眼电影
  */
-public class ItemList
+public class Item
 {
     private int id = 0;
     private String item = "";

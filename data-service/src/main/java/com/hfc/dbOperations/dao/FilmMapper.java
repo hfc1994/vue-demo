@@ -35,11 +35,17 @@ public interface FilmMapper
 
     /**
      * 根据年份（year）来分组，查询各个年份的电影数量
-     * @return
+     * @return 年份和对应年份的数量
      */
-    @Select("select year,count(id) from film group by year")
+    @Select("select year,count(id) as total from film group by year")
     @ResultType(List.class)
-    List<Map<String, Integer>> queryFilmGroupByYear();
+    List<Map<String, Long>> queryFilmGroupByYear();
+
+    @Select("select count(id) as total from film where type like '%${tag}%'")
+    Map<String, Long> queryFilmByType(@Param("tag")String tag);
+
+    @Select("select count(id) as total from film where star between ${begin} and ${end}")
+    Map<String, String> queryFilmByStar(@Param("begin")String begin, @Param("end")String end);
 
     class FilmProvider
     {
@@ -61,7 +67,7 @@ public interface FilmMapper
                 }
             }
 
-            System.out.println(sb.toString());
+//            System.out.println(sb.toString());
             return sb.toString();
         }
     }

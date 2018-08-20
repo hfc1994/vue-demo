@@ -1,12 +1,10 @@
 package com.hfc.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.hfc.dbOperations.service.FilmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,7 +17,7 @@ import java.util.Map;
  */
 @RestController
 @ResponseBody
-@RequestMapping("/film")
+@RequestMapping(value = "/film",produces = "application/json;charset=utf-8")
 public class FilmController
 {
     private static Logger LOGGER = LoggerFactory.getLogger(FilmController.class);
@@ -27,12 +25,31 @@ public class FilmController
     @Resource
     private FilmService filmService;
 
-    @RequestMapping(value = "/queryGroupByYear", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public void queryFilmGroupByYear()
+    @RequestMapping(value = "/queryGroupByYear/{numLimit}", method = RequestMethod.GET)
+    public String queryFilmGroupByYear(@PathVariable(name="numLimit")int numLimit)
     {
-        LOGGER.info("进入queryFilmGroupByYear");
-        List<Map<String, Integer>> lm = filmService.queryFilmGroupByYear();
+        List<Map<String, String>> map = filmService.queryFilmGroupByYear(numLimit);
 
-        System.out.println(lm.get(0).toString());
+        String strMap = null;
+        if (null == map)
+        {
+            strMap = "[]";
+        }
+        else
+        {
+            strMap = JSON.toJSONString(map);
+        }
+
+//        LOGGER.info(strMap);
+
+        return strMap;
+    }
+
+    @RequestMapping(value = "/queryByType", method = RequestMethod.GET)
+    public String queryFilmByType()
+    {
+        List<Map<String, String>> lm = filmService.queryFilmByType();
+
+        return JSON.toJSONString(lm);
     }
 }

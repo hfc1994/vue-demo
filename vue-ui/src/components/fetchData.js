@@ -5,7 +5,7 @@ import axios from 'axios'
 
 class API {
   getItemList () {
-    return instance.get('/itemList/getItemListAll')
+    return instance.get('/item/getItems')
   }
 }
 

@@ -20,7 +20,7 @@
         <div class="treebar" v-show="isShow">
           <!-- <el-button type="primary" size="mini" icon="el-icon-download" title="加载"
             @click="loadModel" style="margin-top: 50px"></el-button> -->
-          <el-tree :data="modelSource" node-key="id" :default-expanded-keys="['1']" :props="defaultProps"
+          <el-tree :data="modelSource" :default-expanded-keys="['1']" :props="defaultProps"
             @node-click="handleNodeClick" id="the-el-tree"></el-tree>
         </div>
       </transition>
@@ -28,17 +28,17 @@
         <el-tabs type="border-card" @tab-click="clickTabs" :value="tabType">
           <el-tab-pane label="节点1" name="one">
             <div v-show="tabType === 'one'">
-              <model-view :type="type" :id="id" :name="name" :tabType="tabType"></model-view>
+              <model-view :type="type" :id="id" :tabType="tabType"></model-view>
             </div>
           </el-tab-pane>
           <el-tab-pane label="节点2" name="two">
             <div v-show="tabType === 'two'">
-              <model-view :type="type" :id="id" :name="name" :tabType="tabType"></model-view>
+              <model-view :type="type" :id="id" :tabType="tabType"></model-view>
             </div>
           </el-tab-pane>
           <el-tab-pane label="节点3" name="three">
             <div v-show="tabType === 'three'">
-              <model-view :type="type" :id="id" :name="name" :tabType="tabType"></model-view>
+              <model-view :type="type" :id="id" :tabType="tabType"></model-view>
             </div>
           </el-tab-pane>
         </el-tabs>
@@ -64,21 +64,23 @@ export default {
       taskIcon: 'el-icon-document',
       isShow: true,
       tabType: 'three',
-      modelSource: [{'name':'数据库列表','id':'1','children':[{'children':[{'name':'mysql001','id':'10001','type':'db'},{'name':'mysql002','id':'10002','type':'db'}],'name':'mysql','id':'mysql'},{'children':[{'name':'oracle001','id':'10003','type':'db'},{'name':'oracle002','id':'10004','type':'db'}],'name':'oracle','id':'oracle'},{'children':[{'name':'postgresql001','id':'10005','type':'db'},{'name':'postgresql002','id':'10006','type':'db'}],'name':'postgresql','id':'postgresql'}]}],
+//      modelSource: [{'name':'数据库列表','id':'1','children':[{'children':[{'name':'mysql001','id':'10001','type':'db'},{'name':'mysql002','id':'10002','type':'db'}],'name':'mysql','id':'mysql'},{'children':[{'name':'oracle001','id':'10003','type':'db'},{'name':'oracle002','id':'10004','type':'db'}],'name':'oracle','id':'oracle'},{'children':[{'name':'postgresql001','id':'10005','type':'db'},{'name':'postgresql002','id':'10006','type':'db'}],'name':'postgresql','id':'postgresql'}]}],
+      modelSource: [],
       defaultProps: {
         children: 'children',
         label: 'name'
       },
       id: '',
-      name: '',
       type: ''
     }
   },
   created: function () {
-//    this.id = '10002'
-//    this.name = 'oracle10002'
-//    this.type = 'db'
-//    this.$router.push({name: 'model', params: {'id': this.id, 'name': this.name, 'type': this.type}})
+    let self = this
+    api.getItemList().then(function (response) {
+      self.modelSource = response.data
+    }).catch(function (error) {
+      console.log(error)
+    })
   },
   methods: {
     changeTreeBar: function () {
@@ -92,9 +94,6 @@ export default {
         this.isShow = true
       }
     },
-    loadModel: function () {
-      this.$router.push({name: 'model', params: {id: '10001', name: 'mysql', type: 'db', tabType: this.tabType}})
-    },
     clickTabs: function (tab) {
       if (tab.index === '0') {
         this.tabType = 'one'
@@ -103,14 +102,13 @@ export default {
       } else {
         this.tabType = 'three'
       }
-      this.$router.push({ name: 'model', params: {id: this.id, name: this.name, type: this.type, tabType: this.tabType} })
+      this.$router.push({ name: 'model', params: {id: this.id, type: this.type, tabType: this.tabType} })
     },
     handleNodeClick: function (data, node) {
       if (node.isLeaf) {
         this.id = node.parent.data.id
-        this.name = data.name
-        this.type = data.type
-        this.$router.push({ name: 'model', params: {id: this.id, name: this.name, type: this.type, tabType: this.tabType} })
+        this.type = node.parent.data.type + "_" + data.type
+        this.$router.push({ name: 'model', params: {id: this.id, type: this.type, tabType: this.tabType} })
       }
     },
     popMsgBox: function () {
@@ -122,7 +120,7 @@ export default {
         ])
       }).then( action => {
         //测试发现，只有点击确定关闭才会有这个后续
-        //直接右上角“×”关闭不会触发此处
+        //直接右上角“×”关闭不会触发此处,还会有个异常
         alert('后续')
       })
     },

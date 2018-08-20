@@ -8,7 +8,7 @@ import model from '../components/model.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
       path: '*',
@@ -27,7 +27,7 @@ export default new Router({
       name: 'publish',
       component: publish,
       children: [{
-        path: 'model/:type/:id/:name/:tabType',
+        path: 'model/:id/:type/:tabType',
         name: 'model',
         component: model
       }]

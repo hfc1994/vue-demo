@@ -9,7 +9,7 @@
 /* eslint-disable */
 export default{
   name: 'modelView',
-  props: ['type', 'id', 'name', 'tabType'],
+  props: ['type', 'id', 'tabType'],
   data () {
     return {
       msg: '暂无有效数据',
@@ -25,7 +25,6 @@ export default{
         this.msg = '暂无有效数据'
         this.isShow = true
       } else {
-        this.name = this.$route.params.name
         this.id = this.$route.params.id
         this.type = this.$route.params.type
         this.tabType = this.$route.params.tabType
