@@ -1,9 +1,7 @@
 package com.hfc.dbOperations.dao;
 
 import com.hfc.entity.Film;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.*;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -35,6 +33,13 @@ public interface FilmMapper
     @InsertProvider(type = FilmProvider.class, method = "batchInsert")
     int batchInsertFilm(List<Film> films);
 
+    /**
+     * 根据年份（year）来分组，查询各个年份的电影数量
+     * @return
+     */
+    @Select("select year,count(id) from film group by year")
+    @ResultType(List.class)
+    List<Map<String, Integer>> queryFilmGroupByYear();
 
     class FilmProvider
     {
