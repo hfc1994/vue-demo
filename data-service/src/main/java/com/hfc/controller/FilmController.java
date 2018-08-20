@@ -50,6 +50,34 @@ public class FilmController
     {
         List<Map<String, String>> lm = filmService.queryFilmByType();
 
-        return JSON.toJSONString(lm);
+        String strList = null;
+        if (lm.size() == 0)
+        {
+            strList = "[]";
+        }
+        else
+        {
+            strList = JSON.toJSONString(lm);
+        }
+
+        return strList;
+    }
+
+    @RequestMapping(value = "/queryByStar", method = RequestMethod.GET)
+    public String queryFilmByStar()
+    {
+        List<Map<String, String>> lm = filmService.queryFilmByStar();
+
+        String strList = null;
+        if (lm.size() == 0)
+        {
+            strList = "[]";
+        }
+        else
+        {
+            strList = JSON.toJSONString(lm);
+        }
+
+        return strList;
     }
 }

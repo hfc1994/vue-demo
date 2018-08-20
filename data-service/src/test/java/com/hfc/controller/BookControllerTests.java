@@ -12,18 +12,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 
 /**
- * Created by hfc on 2018/8/20.
+ * Created by user-hfc on 2018/8/20.
  *
- * @author hfc.
+ * @author user-hfc.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FilmControllerTests
+public class BookControllerTests
 {
-    private static Logger LOGGER = LoggerFactory.getLogger(FilmControllerTests.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(BookControllerTests.class);
 
     @Resource
-    private FilmController filmController;
+    private BookController bookController;
 
     @Before
     public void init()
@@ -34,10 +34,7 @@ public class FilmControllerTests
     @Test
     public void test()
     {
-//        LOGGER.info(filmController.queryFilmGroupByYear(0));
-//        LOGGER.info(filmController.queryFilmGroupByYear(15));
-//        LOGGER.info(filmController.queryFilmByType());
-        LOGGER.info(filmController.queryFilmByStar());
+        LOGGER.info(bookController.queryBookByPublishing("计算机"));
     }
 
     @After

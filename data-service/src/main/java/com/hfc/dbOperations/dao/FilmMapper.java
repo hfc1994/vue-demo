@@ -44,8 +44,8 @@ public interface FilmMapper
     @Select("select count(id) as total from film where type like '%${tag}%'")
     Map<String, Long> queryFilmByType(@Param("tag")String tag);
 
-    @Select("select count(id) as total from film where star between ${begin} and ${end}")
-    Map<String, String> queryFilmByStar(@Param("begin")String begin, @Param("end")String end);
+    @Select("select count(id) as total from film where star >= ${begin} and star < ${end}")
+    Map<String, String> queryFilmByStar(@Param("begin")int begin, @Param("end")int end);
 
     class FilmProvider
     {

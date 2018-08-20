@@ -134,15 +134,15 @@ public class FilmService
             {add("灾难");}
             {add("悬疑");}
         };
-        List<Map<String, String>> result = new ArrayList<>(12);
+        ArrayList<Map<String, String>> result = new ArrayList<>(12);
 
-        Map<String, String> map = new HashMap<>(12);
         for (String tag : tags)
         {
             //哪种出异常就跳过哪种
             try
             {
                 Map<String, Long> tmp = filmMapper.queryFilmByType(tag);
+                Map<String, String> map = new HashMap<>(1);
                 map.put(tag, String.valueOf(tmp.get("total")));
                 result.add(map);
             }
@@ -152,6 +152,37 @@ public class FilmService
             }
         }
 
+        result.trimToSize();
+
         return result;
+    }
+
+    /**
+     * 根据film的star区间来查询对应星级的电影数量
+     * 这里默认从2到10分分成8个档次[2-3),[3-4),[4-5),[5-6),[6-7),[7-8),[8-9),[9-10)
+     * @return
+     */
+    public List<Map<String,String>> queryFilmByStar()
+    {
+        ArrayList<Map<String,String>> lm = new ArrayList<>(8);
+
+        int beginIndex = 2;
+        int endIndex = 9;
+        for (int i=beginIndex; i<=endIndex; i++)
+        {
+            try
+            {
+                Map<String,String> tmpMap = new HashMap<>(1);
+                tmpMap.put(String.valueOf(i), filmMapper.queryFilmByStar(i, i + 1).get("total"));
+                lm.add(tmpMap);
+            }
+            catch (Exception e)
+            {
+                LOGGER.error(e.getMessage());
+            }
+        }
+
+        lm.trimToSize();
+        return lm;
     }
 }
