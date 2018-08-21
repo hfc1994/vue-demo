@@ -236,7 +236,94 @@ export default {
       return option
     },
     produceTypeOption: function (data) {
+      let type = [];
+      let total = [];
+      for (let obj of data)
+      {
+        type.push(obj.type)
+        total.push(obj.total)
+      }
 
+      let option = {
+        title: {
+          left: 'center',
+          text: '各类型电影数量（数据不全）'
+        },
+        xAxis: {
+          data: type,
+          axisLabel: {
+            inside: true,
+            textStyle: {
+                color: '#fff'
+            }
+          },
+          axisTick: {
+              show: false
+          },
+          axisLine: {
+              show: false
+          },
+          z: 10
+        },
+        yAxis: {
+          axisLine: {
+            show: false
+          },
+          axisTick: {
+              show: false
+          },
+          axisLabel: {
+            textStyle: {
+                color: '#999'
+            }
+          }
+        },
+        dataZoom: [
+          {
+            type: 'inside'
+          }
+        ],
+        series: [
+          {
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              }
+            },
+            barGap: '-100%',
+            barCategoryGap: '40%',
+            data: total,
+            animation: false
+        },{
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(
+                  0, 0, 0, 1,
+                  [
+                    {offset: 0, color: '#83bff6'},
+                    {offset: 0.5, color: '#188df0'},
+                    {offset: 1, color: '#188df0'}
+                  ]
+                )
+              },
+              emphasis: {
+                  color: new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                      {offset: 0, color: '#2378f7'},
+                      {offset: 0.7, color: '#2378f7'},
+                      {offset: 1, color: '#83bff6'}
+                    ]
+                  )
+                }
+              },
+              data: total
+          }],
+      }
+
+      return option
     },
     produceTagOption: function (data) {
 
