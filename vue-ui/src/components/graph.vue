@@ -186,11 +186,12 @@ export default {
 
         visualMap: {
           show: false,
-          min: 380,
-          max: 600,
+          min: 0,
+          max: 10000,
           inRange: {
-            colorLightness: [0, 1]
-          }
+            colorLightness: [0, 0.5]
+          },
+          color: ['rgb(150, 220, 230)','rgb(70, 170, 230)']
         },
 
         series: [
@@ -219,7 +220,7 @@ export default {
             },
             itemStyle: {
               normal: {
-                color: 'red',
+//                color: 'red',
                 shadowBlur: 20,
                 shadowColor: 'rgba(166, 177, 188, 0.3)'
               }
