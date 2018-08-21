@@ -5,25 +5,25 @@ import axios from 'axios'
 
 class API {
   getItemList () {
-    return instance.get('/item/getItems')
+    return instance.get(`/item/getItems`)
   }
   getFilmByYear (numLimit) {
-    return instance.get('/film/queryFilmByYear/${numLimit}')
+    return instance.get(`/film/queryFilmByYear/${numLimit}`)
   }
   getFilmByType () {
-    return instance.get('/film/queryByType')
+    return instance.get(`/film/queryByType`)
   }
   getFilmByStar () {
-    return instance.get('/film/queryByStar')
+    return instance.get(`/film/queryByStar`)
   }
   getBookByPublishing (tag) {
-    return instance.get('/book/queryByPublishing/${tag}')
+    return instance.get(`/book/queryByPublishing/${tag}`)
   }
   getBookByPrices (price) {
-    return instance.get('/book/queryByPrices/${price}')
+    return instance.get(`/book/queryByPrices/${price}`)
   }
   getBookByScores (score) {
-    return instance.get('/queryByScores/${score}')
+    return instance.get(`/queryByScores/${score}`)
   }
 }
 

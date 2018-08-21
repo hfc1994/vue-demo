@@ -143,7 +143,8 @@ public class FilmService
             {
                 Map<String, Long> tmp = filmMapper.queryFilmByType(tag);
                 Map<String, String> map = new HashMap<>(1);
-                map.put(tag, String.valueOf(tmp.get("total")));
+                map.put("type", tag);
+                map.put("total", String.valueOf(tmp.get("total")));
                 result.add(map);
             }
             catch (Exception e)
@@ -173,7 +174,8 @@ public class FilmService
             try
             {
                 Map<String,String> tmpMap = new HashMap<>(1);
-                tmpMap.put(String.valueOf(i), filmMapper.queryFilmByStar(i, i + 1).get("total"));
+                tmpMap.put("score", String.valueOf(i));
+                tmpMap.put("total", filmMapper.queryFilmByStar(i, i + 1).get("total"));
                 lm.add(tmpMap);
             }
             catch (Exception e)

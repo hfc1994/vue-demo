@@ -37,7 +37,7 @@ public interface FilmMapper
      * 根据年份（year）来分组，查询各个年份的电影数量
      * @return 年份和对应年份的数量
      */
-    @Select("select year,count(id) as total from film group by year")
+    @Select("select year,count(id) as total from film group by year order by year asc")
     @ResultType(List.class)
     List<Map<String, Long>> queryFilmGroupByYear();
 

@@ -4,6 +4,7 @@ import HelloWorld from '../components/HelloWorld.vue'
 import second from '../components/second.vue'
 import publish from '../components/publish.vue'
 import model from '../components/model.vue'
+import graph from '../components/graph.vue'
 
 Vue.use(Router)
 
@@ -30,6 +31,10 @@ export default new Router({
         path: 'model/:id/:type/:tabType',
         name: 'model',
         component: model
+      }, {
+        path: 'graph/:tabType/:name/:type',
+        name: 'graph',
+        component: graph
       }]
     }
   ]

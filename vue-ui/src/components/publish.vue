@@ -9,10 +9,10 @@
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
           style="margin-left: 0px; margin-top: 15px" title="任务">
         </el-button>
-        <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-menu"
+        <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-more"
           style="margin-left: 0px; margin-top: 15px;background-color: rgba(255, 255, 255, 0.57)" @click="popMsgBox" title="弹窗">
         </el-button>
-        <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-menu"
+        <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-more"
                    style="margin-left: 0px; margin-top: 15px;background-color: rgba(255, 255, 255, 0.57)" @click="fetchItemData" title="取数据">
         </el-button>
       </div>
@@ -21,23 +21,28 @@
           <!-- <el-button type="primary" size="mini" icon="el-icon-download" title="加载"
             @click="loadModel" style="margin-top: 50px"></el-button> -->
           <el-tree :data="modelSource" :default-expanded-keys="['1']" :props="defaultProps"
-            @node-click="handleNodeClick" id="the-el-tree"></el-tree>
+            @node-click="handleNodeClick" id="the-el-tree" accordion></el-tree>
         </div>
       </transition>
       <div class="detail">
         <el-tabs type="border-card" @tab-click="clickTabs" :value="tabType">
-          <el-tab-pane label="节点1" name="one">
-            <div v-show="tabType === 'one'">
+          <el-tab-pane :label="tabOne" name="one">
+            <div v-if="tabType === 'one'">
               <model-view :type="type" :id="id" :tabType="tabType"></model-view>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="节点2" name="two">
-            <div v-show="tabType === 'two'">
+          <el-tab-pane :label="tabTwo" name="two">
+            <div v-if="tabType === 'two'">
               <model-view :type="type" :id="id" :tabType="tabType"></model-view>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="节点3" name="three">
-            <div v-show="tabType === 'three'">
+          <el-tab-pane :label="tabThree" name="three">
+            <div v-if="tabType === 'three'">
+              <model-view :type="type" :id="id" :tabType="tabType"></model-view>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane :label="tabFour" name="four">
+            <div v-if="tabType === 'four'">
               <model-view :type="type" :id="id" :tabType="tabType"></model-view>
             </div>
           </el-tab-pane>
@@ -63,7 +68,7 @@ export default {
       packIcon: 'el-icon-arrow-left',
       taskIcon: 'el-icon-document',
       isShow: true,
-      tabType: 'three',
+      tabType: 'one',
 //      modelSource: [{'name':'数据库列表','id':'1','children':[{'children':[{'name':'mysql001','id':'10001','type':'db'},{'name':'mysql002','id':'10002','type':'db'}],'name':'mysql','id':'mysql'},{'children':[{'name':'oracle001','id':'10003','type':'db'},{'name':'oracle002','id':'10004','type':'db'}],'name':'oracle','id':'oracle'},{'children':[{'name':'postgresql001','id':'10005','type':'db'},{'name':'postgresql002','id':'10006','type':'db'}],'name':'postgresql','id':'postgresql'}]}],
       modelSource: [],
       defaultProps: {
@@ -71,7 +76,11 @@ export default {
         label: 'name'
       },
       id: '',
-      type: ''
+      type: '',
+      tabOne: '节点1',
+      tabTwo: '节点2',
+      tabThree: '节点3',
+      tabFour: '节点4'
     }
   },
   created: function () {
@@ -99,16 +108,39 @@ export default {
         this.tabType = 'one'
       } else if (tab.index === '1') {
         this.tabType = 'two'
-      } else {
+      } else if (tab.index === '2'){
         this.tabType = 'three'
+      } else {
+        this.tabType = 'four'
       }
       this.$router.push({ name: 'model', params: {id: this.id, type: this.type, tabType: this.tabType} })
     },
     handleNodeClick: function (data, node) {
       if (node.isLeaf) {
         this.id = node.parent.data.id
+        this.handleTabName(data.type)
         this.type = node.parent.data.type + "_" + data.type
         this.$router.push({ name: 'model', params: {id: this.id, type: this.type, tabType: this.tabType} })
+      }
+    },
+    handleTabName: function (type) {
+      this.tabOne = '按年份'
+      this.tabTwo = '按评分'
+      this.tabFour = '按关键字'
+      if (type.indexOf('film') !== -1) {
+        this.tabThree = '按类型'
+      } else if (type.indexOf('book') !== -1) {
+        this.tabThree = '按出版社'
+      } else if (type.indexOf('music') !== -1) {
+        this.tabThree = '按歌手'
+      } else if (type.indexOf('phone') !== -1) {
+        this.tabTwo = '按跑分'
+        this.tabThree = '按厂商'
+        this.tabFour = '按价格'
+      } else if (type.indexOf('computer') !== -1) {
+        this.tabTwo = '按跑分'
+        this.tabThree = '按cpu'
+        this.tabFour = '按价格'
       }
     },
     popMsgBox: function () {
