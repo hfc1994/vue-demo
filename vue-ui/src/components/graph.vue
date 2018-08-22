@@ -326,7 +326,45 @@ export default {
       return option
     },
     produceTagOption: function (data) {
+      let publishing = []
+      let total = []
 
+      for (let obj of data)
+      {
+        let publish = {}
+        publish['name'] = obj.publishing
+        publish['max'] = 30
+        publishing.push(publish)
+        total.push(obj.total)
+      }
+
+      let option = {
+        title: {
+            left: 'center',
+            text: '各出版社出版的带有‘计算机’关键字图书的数量（数据不全）'
+        },
+        legend: {
+            data: ['图书数量']
+        },
+        radar: {
+          name: {
+            textStyle: {
+              color: '#fff',
+              backgroundColor: '#999',
+              borderRadius: 3,
+              padding: [3, 5]
+            }
+          },
+          indicator: publishing
+        },
+        series: [{
+          name: '含有‘计算机’字样的图书数量',
+          type: 'radar',
+          data: total
+        }]
+      }
+
+      return option
     }
   }
 }
