@@ -1,5 +1,7 @@
 <template>
-  <div id="graph"></div>
+  <div id="graph" v-loading="loading" element-loading-text="加载中"
+        element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 0.675)">
+  </div>
 </template>
 
 <script>
@@ -14,7 +16,8 @@ export default {
       msg: 'graph页面',
       tabType: '',
       type: '',
-      name: ''
+      name: '',
+      loading: false
     }
   },
   created () {
@@ -23,28 +26,14 @@ export default {
     this.name = this.$route.params.name       //douban,maoyan and so on
   },
   mounted: function () {
+    this.loading = true
     if (this.name === 'douban') {
       this.handleDouBanData(this.tabType, this.type)
     } else {
       this.handleOtherData(this.name, this.type)
     }
-//    let dom = document.getElementById('graph')
-//    let myChart = echarts.init(dom)
-//    let option = {
-//      xAxis: {
-//        type: 'category',
-//        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-//      },
-//      yAxis: {
-//        type: 'value'
-//      },
-//      series: [{
-//        data: [820, 932, 901, 934, 1290, 1330, 1320],
-//        type: 'line'
-//      }]
-//    };
-//
-//    myChart.setOption(option, true);
+    //后续api请求是异步的，如果在这里改为false，会导致loading效果时间很短，看不到
+//    this.loading = false
   },
   watch: {
     $route (to, from) {
@@ -60,18 +49,21 @@ export default {
           api.getFilmByYear(0).then(response => {
             let option = this.produceYearOption(response.data)
             myChart.setOption(option)
+            this.loading = false
           })
         } else if (tabType === 'two') {
           //按评分，需要做饼状图
           api.getFilmByStar().then(response => {
             let option = this.produceStarOption(response.data)
             myChart.setOption(option)
+            this.loading = false
           })
         } else if (tabType === 'three') {
           //按类型
           api.getFilmByType().then(response => {
             let option = this.produceTypeOption(response.data)
             myChart.setOption(option)
+            this.loading = false
           })
         } else {
           this.handleOtherData('douban', type)
@@ -82,6 +74,7 @@ export default {
           api.getBookByPublishing('计算机').then(response => {
             let option = this.produceTagOption(response.data)
             myChart.setOption(option)
+            this.loading = false
           })
         }
         else {
@@ -95,6 +88,8 @@ export default {
       //除了豆瓣的数据，其它暂时没有，暂时不处理
       let dom = document.getElementById('graph')
       dom.innerHTML='<span>当前暂无生成图表的数据</span>'
+
+      this.loading = false
     },
     produceYearOption: function (data) {
       let year = [];
