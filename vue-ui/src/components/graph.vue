@@ -94,7 +94,7 @@ export default {
     handleOtherData: function (name, type) {
       //除了豆瓣的数据，其它暂时没有，暂时不处理
       let dom = document.getElementById('graph')
-      dom.innerHTML='<span>当前暂无数据</span>'
+      dom.innerHTML='<span>当前暂无生成图表的数据</span>'
     },
     produceYearOption: function (data) {
       let year = [];
@@ -343,10 +343,12 @@ export default {
             left: 'center',
             text: '各出版社出版的带有‘计算机’关键字图书的数量（数据不全）'
         },
+        tooltip: {},
         legend: {
             data: ['图书数量']
         },
         radar: {
+//          shape: 'circle',
           name: {
             textStyle: {
               color: '#fff',
@@ -360,7 +362,10 @@ export default {
         series: [{
           name: '含有‘计算机’字样的图书数量',
           type: 'radar',
-          data: total
+          data: [{
+            value: total,
+            name: data[0]
+          }]
         }]
       }
 

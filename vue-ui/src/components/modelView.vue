@@ -10,14 +10,16 @@ export default{
   props: ['type', 'id', 'tabType'],
   data () {
     return {
-      msg: '暂无有效数据',
+      msg: 'modelView暂无有效数据',
       isShow: true
     }
   },
   created () {
   },
   mounted () {
-//    this.$router.push({name: 'model', params: {name: this.name, id: this.id, type: this.type}})
+    if (this.id !== null && this.id !== '') {
+      this.$router.push({ name: 'model', params: {id: this.id, type: this.type, tabType: this.tabType} })
+    }
   },
   watch: {
     $route (to, from) {

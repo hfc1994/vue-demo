@@ -21,10 +21,13 @@
           <!-- <el-button type="primary" size="mini" icon="el-icon-download" title="加载"
             @click="loadModel" style="margin-top: 50px"></el-button> -->
           <el-tree :data="modelSource" :default-expanded-keys="['1']" :props="defaultProps"
-            @node-click="handleNodeClick" id="the-el-tree" accordion></el-tree>
+            @node-click="handleNodeClick" id="the-el-tree" highlight-current accordion></el-tree>
         </div>
       </transition>
       <div class="detail">
+        <transition name="fade">
+          <div id="top-bar">{{ navigation }}</div>
+        </transition>
         <el-tabs type="border-card" @tab-click="clickTabs" :value="tabType">
           <el-tab-pane :label="tabOne" name="one">
             <div v-if="tabType === 'one'">
@@ -80,7 +83,8 @@ export default {
       tabOne: '节点1',
       tabTwo: '节点2',
       tabThree: '节点3',
-      tabFour: '节点4'
+      tabFour: '节点4',
+      navigation: ''
     }
   },
   created: function () {
@@ -113,10 +117,13 @@ export default {
       } else {
         this.tabType = 'four'
       }
-      this.$router.push({ name: 'model', params: {id: this.id, type: this.type, tabType: this.tabType} })
+//      if (this.id !== null && this.id !== '') {
+//        this.$router.push({ name: 'model', params: {id: this.id, type: this.type, tabType: this.tabType} })
+//      }
     },
     handleNodeClick: function (data, node) {
       if (node.isLeaf) {
+        this.navigation = node.parent.data.name + '>' + data.name
         this.id = node.parent.data.id
         this.handleTabName(data.type)
         this.type = node.parent.data.type + "_" + data.type
@@ -170,7 +177,7 @@ export default {
           msgbox({
             title: '结果',
             message: h1('p', null, [
-              h1('textarea', {style: 'width: 100%;height: 90px;'}, response.data[0].item)
+              h1('textarea', {style: 'width: 100%;height: 90px;'}, '看console.log')
             ])
           })
         })
@@ -220,7 +227,7 @@ body {
 }
 
 .treebar {
-  flex: 0 0 250;
+  /*flex: 0 0 250;*/
   left: 50px;
   width: 250px;
   height: 100%;
@@ -234,6 +241,12 @@ body {
   margin: 0px 10px;
   background-color: rgb(231, 231, 231);
   box-shadow: 0px 0px 4px 2px rgba(131, 131, 131, 0.7);
+}
+
+#top-bar {
+  background-color: rgb(255, 255, 255);
+  text-align: left;
+  height: 25px;
 }
 
 .fade-enter,
@@ -250,4 +263,8 @@ body {
   background-color: rgb(248, 248, 248);
   margin-left: 10px;
 }
+
+/*.is-current.is-focusable{*/
+  /*background-color: rgb(255, 255, 255);*/
+/*}*/
 </style>

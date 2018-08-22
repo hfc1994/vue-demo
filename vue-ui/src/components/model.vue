@@ -55,7 +55,7 @@ export default {
   name: 'model',
   data () {
     return {
-      msg: '暂无有效数据',
+      msg: 'model暂无有效数据',
       isShow: false,
       id: '',
       type: '',
