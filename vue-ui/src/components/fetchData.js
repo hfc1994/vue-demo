@@ -25,6 +25,9 @@ class API {
   getBookByScores (score) {
     return instance.get(`/queryByScores/${score}`)
   }
+  getMockData () {
+    return instance.get(`/mock/getMockData`)
+  }
 }
 
 const baseUrl = '/'

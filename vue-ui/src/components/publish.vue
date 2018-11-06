@@ -7,7 +7,7 @@
           style="background-color: rgba(255, 255, 255, 0.57)" @click="changeTreeBar" title="收起">
         </el-button>
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
-          style="margin-left: 0px; margin-top: 15px" title="任务">
+          style="margin-left: 0px; margin-top: 15px" title="任务" @click="showDialog">
         </el-button>
         <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-more"
           style="margin-left: 0px; margin-top: 15px;background-color: rgba(255, 255, 255, 0.57)" @click="popMsgBox" title="弹窗">
@@ -52,6 +52,10 @@
         </el-tabs>
       </div>
     </div>
+    <el-dialog title="显示新图表" :visible.sync="dialogVisible" id="graphDialog"
+                :width="dialogWidth">
+      <ele-graph @zoomEvent="handleChildZoom"></ele-graph>
+    </el-dialog>
   </div>
 </template>
 
@@ -60,19 +64,19 @@
 import modelView from './modelView.vue'
 import model from './model.vue'
 import {api} from './fetchData.js'
+import eleGraph from './eleGraph.vue'
 
 export default {
   name: 'publish',
-  components: {modelView, model},
+  components: {modelView, model, eleGraph},
   data () {
     return {
       packDisabled: false,
-      taskDisabled: true,
+      taskDisabled: false,
       packIcon: 'el-icon-arrow-left',
       taskIcon: 'el-icon-document',
       isShow: true,
       tabType: 'one',
-//      modelSource: [{'name':'数据库列表','id':'1','children':[{'children':[{'name':'mysql001','id':'10001','type':'db'},{'name':'mysql002','id':'10002','type':'db'}],'name':'mysql','id':'mysql'},{'children':[{'name':'oracle001','id':'10003','type':'db'},{'name':'oracle002','id':'10004','type':'db'}],'name':'oracle','id':'oracle'},{'children':[{'name':'postgresql001','id':'10005','type':'db'},{'name':'postgresql002','id':'10006','type':'db'}],'name':'postgresql','id':'postgresql'}]}],
       modelSource: [],
       defaultProps: {
         children: 'children',
@@ -84,7 +88,9 @@ export default {
       tabTwo: '节点2',
       tabThree: '节点3',
       tabFour: '节点4',
-      navigation: ''
+      navigation: '',
+      dialogVisible: false,
+      dialogWidth: '60%'
     }
   },
   created: function () {
@@ -117,9 +123,6 @@ export default {
       } else {
         this.tabType = 'four'
       }
-//      if (this.id !== null && this.id !== '') {
-//        this.$router.push({ name: 'model', params: {id: this.id, type: this.type, tabType: this.tabType} })
-//      }
     },
     handleNodeClick: function (data, node) {
       if (node.isLeaf) {
@@ -182,6 +185,13 @@ export default {
           })
         })
       })
+    },
+    showDialog: function () {
+      this.dialogVisible = true
+      this.dialogWidth = '60%'
+    },
+    handleChildZoom: function (val) {
+      this.dialogWidth = val
     }
   }
 }
