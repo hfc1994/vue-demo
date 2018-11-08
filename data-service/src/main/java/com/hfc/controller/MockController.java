@@ -27,12 +27,14 @@ public class MockController
         {
             JSONObject json = new JSONObject();
             json.put("省份", province);
-            json.put("数量", String.valueOf((int)(Math.random() * 100 + 1)));
+            json.put("绿化面积", String.valueOf((int)(Math.random() * 100 + 1)));
+            json.put("非绿化面积", String.valueOf((int)(Math.random() * 100 + 1)));
+            json.put("未知面积", String.valueOf((int)(Math.random() * 30 + 1)));
             jArray.add(json);
         }
 
         JSONObject ret = new JSONObject();
-        ret.put("key", "省份,数量");
+        ret.put("key", "省份,绿化面积,非绿化面积,未知面积");
         ret.put("value", jArray);
 
         return ret.toJSONString();
