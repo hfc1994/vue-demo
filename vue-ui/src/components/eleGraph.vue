@@ -2,7 +2,7 @@
   <div id="graph">
     <span>图表名称：{{theName}}</span>
     <el-button size="mini" @click="changeChartType">切换图表类型</el-button>
-    <!-- <el-button size="mini" @click="handleZoom">{{buttonText}}</el-button> -->
+    <el-button size="mini" @click="handleZoom">{{buttonText}}</el-button>
     <ve-chart :title="title" :data="chartData" :settings="chartSetting" ref="chartNode" style="width:100%;" v-if="chartType === 'normal'"></ve-chart>
     <ve-map :data="chartData" :settings="chartSetting" style="width: 100%;" v-else-if="chartType === 'map'"></ve-map>
     <ve-heatmap :data='chartData' :settings="chartSetting" style="width: 100%;" v-else-if="chartType === 'heatmap'"></ve-heatmap>
@@ -154,13 +154,15 @@ export default {
       if (this.buttonText === '放大') {
         this.buttonText = '缩小'
         this.$emit('zoomEvent','100%')
-        // this.dialogWidth = '100%'
       } else {
         this.buttonText = '放大'
-        // this.dialogWidth = '60%'
         this.$emit('zoomEvent','60%')
       }
       // this.$refs['chartNode'].echarts.resize()
+      // 点击放大缩小按钮后手动触发重绘
+      let e = document.createEvent('Event')
+      e.initEvent('resize', true, true)
+      window.dispatchEvent(e)
     },
     getStack: function(arr) {
       return [arr[1], arr[2], arr[3]]

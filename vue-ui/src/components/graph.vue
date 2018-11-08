@@ -1,5 +1,5 @@
 <template>
-  <div id="graph" v-loading="loading" element-loading-text="加载中"
+  <div id="graph" ref="echartsNode" v-loading="loading" element-loading-text="加载中"
         element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 0.675)">
   </div>
 </template>
@@ -49,6 +49,7 @@ export default {
           api.getFilmByYear(0).then(response => {
             let option = this.produceYearOption(response.data)
             myChart.setOption(option)
+            this.echartsResizeListener(myChart)
             this.loading = false
           })
         } else if (tabType === 'two') {
@@ -56,6 +57,7 @@ export default {
           api.getFilmByStar().then(response => {
             let option = this.produceStarOption(response.data)
             myChart.setOption(option)
+            this.echartsResizeListener(myChart)
             this.loading = false
           })
         } else if (tabType === 'three') {
@@ -63,6 +65,7 @@ export default {
           api.getFilmByType().then(response => {
             let option = this.produceTypeOption(response.data)
             myChart.setOption(option)
+            this.echartsResizeListener(myChart)
             this.loading = false
           })
         } else {
@@ -74,6 +77,7 @@ export default {
           api.getBookByPublishing('计算机').then(response => {
             let option = this.produceTagOption(response.data)
             myChart.setOption(option)
+            this.echartsResizeListener(myChart)
             this.loading = false
           })
         }
@@ -92,6 +96,7 @@ export default {
       this.loading = false
     },
     produceYearOption: function (data) {
+      // 折线图
       let year = [];
       let total = [];
       for (let obj of data)
@@ -138,19 +143,20 @@ export default {
             return [pt[0], '10%']
           }
         }
-//        dataZoom: [{
-//          type: 'inside',
-//          start: 0,
-//          end: 10
-//        },{
-//          start: 0,
-//          end: 10,
-//        }]
+      //  dataZoom: [{
+      //    type: 'inside',
+      //    start: 0,
+      //    end: 10
+      //  },{
+      //    start: 0,
+      //    end: 10,
+      //  }]
       }
 
       return option
     },
     produceStarOption: function (data) {
+      // 饼图
       let length = data.length
       let pieData = []
 
@@ -195,7 +201,7 @@ export default {
             type: 'pie',
             radius: '50%',
             data: pieData,
-//          roseType: 'radius',
+        //  roseType: 'radius',
             label: {
               normal: {
                 textStyle: {
@@ -215,7 +221,7 @@ export default {
             },
             itemStyle: {
               normal: {
-//                color: 'red',
+              //  color: 'red',
                 shadowBlur: 20,
                 shadowColor: 'rgba(166, 177, 188, 0.3)'
               }
@@ -231,6 +237,7 @@ export default {
       return option
     },
     produceTypeOption: function (data) {
+      // 柱状图
       let type = [];
       let total = [];
       for (let obj of data)
@@ -321,6 +328,7 @@ export default {
       return option
     },
     produceTagOption: function (data) {
+      // 雷达图
       let publishing = []
       let total = []
 
@@ -343,7 +351,7 @@ export default {
             data: ['图书数量']
         },
         radar: {
-//          shape: 'circle',
+        //  shape: 'circle',
           name: {
             textStyle: {
               color: '#fff',
@@ -365,6 +373,12 @@ export default {
       }
 
       return option
+    },
+    echartsResizeListener: function(echarts) {
+      // echart重绘
+      window.onresize = function() {
+        echarts.resize();
+      }
     }
   }
 }

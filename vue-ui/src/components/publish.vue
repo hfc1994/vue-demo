@@ -112,6 +112,8 @@ export default {
         this.title = '收起'
         this.isShow = true
       }
+      let obj = document.getElementById('graph')
+      console.log(obj)
     },
     clickTabs: function (tab) {
       if (tab.index === '0') {
