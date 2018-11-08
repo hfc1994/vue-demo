@@ -112,8 +112,13 @@ export default {
         this.title = '收起'
         this.isShow = true
       }
-      let obj = document.getElementById('graph')
-      console.log(obj)
+      let ppid = setTimeout(function() {
+        let e = document.createEvent('Event')
+        e.initEvent('resize', true, true)
+        window.dispatchEvent(e)
+
+        clearTimeout(ppid)
+      }, 700)// 树消失的动画是0.5秒
     },
     clickTabs: function (tab) {
       if (tab.index === '0') {

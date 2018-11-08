@@ -38,6 +38,7 @@ export default {
         'bar',
         'histogramStack', // 堆叠柱状图
         'ring', // 环图
+        // '关系图暂时没有',
         'waterfall' // 瀑布图
         ],
       typeIndex: 0,
