@@ -9,6 +9,9 @@
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
           style="margin-left: 0px; margin-top: 15px" title="任务" @click="showDialog">
         </el-button>
+        <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
+          style="margin-left: 0px; margin-top: 15px" title="任务2" @click="showDialog2">
+        </el-button>
         <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-more"
           style="margin-left: 0px; margin-top: 15px;background-color: rgba(255, 255, 255, 0.57)" @click="popMsgBox" title="弹窗">
         </el-button>
@@ -52,9 +55,13 @@
         </el-tabs>
       </div>
     </div>
-    <el-dialog title="显示新图表" :visible.sync="dialogVisible" id="graphDialog"
+    <el-dialog title="饿了么ECharts封装库" :visible.sync="dialogVisible" id="graphDialog"
                 :width="dialogWidth">
       <ele-graph @zoomEvent="handleChildZoom"></ele-graph>
+    </el-dialog>
+    <el-dialog title="百度ECharts封装库" :visible.sync="dialogVisible2" id="graphDialog2"
+                :width="dialogWidth2">
+      <vue-e-charts @zoomEvent="handleChildZoom2"></vue-e-charts>
     </el-dialog>
   </div>
 </template>
@@ -65,10 +72,11 @@ import modelView from './modelView.vue'
 import model from './model.vue'
 import {api} from './fetchData.js'
 import eleGraph from './eleGraph.vue'
+import vueECharts from './vueECharts.vue'
 
 export default {
   name: 'publish',
-  components: {modelView, model, eleGraph},
+  components: {modelView, model, eleGraph, vueECharts},
   data () {
     return {
       packDisabled: false,
@@ -90,7 +98,9 @@ export default {
       tabFour: '节点4',
       navigation: '',
       dialogVisible: false,
-      dialogWidth: '60%'
+      dialogWidth: '60%',
+      dialogVisible2: false,
+      dialogWidth2: '60%'
     }
   },
   created: function () {
@@ -199,7 +209,14 @@ export default {
     },
     handleChildZoom: function (val) {
       this.dialogWidth = val
-    }
+    },
+    handleChildZoom2: function (val) {
+      this.dialogWidth2 = val
+    },
+    showDialog2: function () {
+      this.dialogVisible2 = true
+      this.dialogWidth2 = '60%'
+    },
   }
 }
 </script>
