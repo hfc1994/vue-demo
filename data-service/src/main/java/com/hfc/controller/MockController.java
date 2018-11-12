@@ -39,4 +39,27 @@ public class MockController
 
         return ret.toJSONString();
     }
+
+    @RequestMapping(value = "/getMockDataset", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public String getMockDataset()
+    {
+        JSONArray jArray = new JSONArray();
+        JSONArray jt = new JSONArray(4);
+        jt.add("省份");
+        jt.add("绿化面积");
+        jt.add("非绿化面积");
+        jt.add("未知面积");
+        jArray.add(jt);
+        for (String province : provinces)
+        {
+            JSONArray jArrayChild = new JSONArray(4);
+            jArrayChild.add(province);
+            jArrayChild.add(String.valueOf((int)(Math.random() * 100 + 1)));
+            jArrayChild.add(String.valueOf((int)(Math.random() * 100 + 1)));
+            jArrayChild.add(String.valueOf((int)(Math.random() * 30 + 1)));
+            jArray.add(jArrayChild);
+        }
+
+        return jArray.toJSONString();
+    }
 }

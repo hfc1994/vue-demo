@@ -28,6 +28,9 @@ class API {
   getMockData () {
     return instance.get(`/mock/getMockData`)
   }
+  getMockDataset () {
+    return instance.get(`/mock/getMockDataset`)
+  }
 }
 
 const baseUrl = '/'

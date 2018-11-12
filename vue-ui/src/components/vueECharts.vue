@@ -1,9 +1,10 @@
 <template>
   <div id="baiduGraph">
     <span>图表名称：{{chartType}}</span>
-    <el-button size="mini" @click="changeChartType">切换图表类型</el-button>
+    <el-button size="mini" @click="changeChartType(false,'sub')">上一个</el-button>
+    <el-button size="mini" @click="changeChartType(false,'add')">下一个</el-button>
     <el-button size="mini" @click="handleZoom">{{buttonText}}</el-button>
-    <charts :options="getPolarData()" :auto-resize="true"></charts>
+    <charts :options="optionData" :auto-resize="true"></charts>
   </div>
 </template>
 
@@ -11,6 +12,12 @@
 /* eslint-disable*/
 import charts from 'vue-echarts'
 import {api} from './fetchData.js'
+import cityJson from '../assets/citygeo.js'
+const cityProvinceMapping = require('../assets/citygeo.js');
+const cityGeo = require('../assets/citygeo.js');
+import cityGeo2 from '../assets/china.json'
+
+charts.registerMap('china', cityGeo2)
 
 export default {
   name: 'vueECharts',
@@ -23,6 +30,9 @@ export default {
       chartType: '',
       columns: [],  // 数据的字段名
       rows: [], // 数据字段名+字段值
+      optionData: {},
+      dataset: [],
+      columnsLength: 0,
       typeArray: [
         'histogram',  // bar
         'line',
@@ -46,17 +56,63 @@ export default {
     }
   },
   mounted: function () {
-    api.getMockData().then(res => {
-      this.columns = res.data.key.split(',')
-      this.rows = res.data.value
+    api.getMockDataset().then(res => {
+      this.dataset = res.data
 
-      this.chartType = this.typeArray[this.typeIndex]
-
+      this.changeChartType(true)
     }).catch(err => {
       console.error(err)
     })
   },
   methods: {
+    changeChartType (fromMounted, operator) {
+      if (!fromMounted) {
+        switch (operator) {
+          case 'add':
+            this.typeIndex ++
+            if (this.typeIndex === this.typeArray.length) {
+              this.typeIndex = 0
+            }
+            break
+          case 'sub':
+            this.typeIndex --
+            if (this.typeIndex === -1) {
+              this.typeIndex = this.typeArray.length - 1
+            }
+            break
+        }
+      }
+
+      this.chartType = this.typeArray[this.typeIndex]
+      let option = {}
+      option.dataset = this.getDataset()
+      option.color = this.getGlobalColor()
+      option.legend = this.getLegend()
+      if (this.chartType === 'histogram') {
+        option.title = this.getTitle('柱状图')
+        option.tooltip = this.getToolTip('axis')
+        option.xAxis = this.getXAxis()
+        option.yAxis = this.getYAxis()
+        option.dataZoom = this.getDataZoom(false, false, false, false)
+        option.series = this.getBarseries()
+      } else if (this.chartType === 'line') {
+        option.title = this.getTitle('折线图')
+        option.tooltip = this.getToolTip('axis')
+        option.xAxis = this.getXAxis()
+        option.yAxis = this.getYAxis()
+        option.series = this.getLineseries()
+      } else if (this.chartType === 'pie' || this.chartType === 'rose') {
+        option.title = this.getTitle('绿化面积饼图')
+        option.tooltip = this.getToolTip('item')
+        option.series = this.getPieseries(this.chartType)
+      } else if (this.chartType === 'map') {
+        option.title = this.getTitle('地图')
+        option.tooltip = this.getToolTip('item')
+        option.series = this.getMapSeries()
+      }
+
+      this.optionData = option
+    },
     handleZoom: function() {
       if (this.buttonText === '放大') {
         this.buttonText = '缩小'
@@ -116,18 +172,44 @@ export default {
         animationDuration: 2000
       }
     },
-    getChartTitle () {
+    getTitle (val) {
       // 图表标题
       return {
         left: 'center',
-        text: '图表切换测试',
+        text: val,
         top: 20,
         textStyle: {
           color: '#ccc'
         }
       }
     },
-    getXAxis (columns) {
+    getLegend () {
+      let legendCol = []
+      for(let i=1; i<this.dataset.length; i++) {
+        legendCol.push((this.dataset[i])[0])
+      }
+      return {
+        data: legendCol
+      }
+    },
+    getToolTip (val) {
+      // 无类目轴的建议使用item，有类目轴的建议用axis
+      return {
+        trigger: val
+      }
+    },
+    getDataset () {
+      return {
+        source: this.dataset
+      }
+    },
+    getGlobalColor () {
+      // 设置全局调色盘
+      return ['#19d4ae', '#5ab1ef', '#fa6e86', '#ffb980', 
+      '#0067a6', '#c4b4e4', '#d87a80', '#9cbbff', '#d9d0c7', 
+      '#87a997', '#d49ea2', '#5b4947', '#7ba3a8']
+    },
+    getXAxis () {
       return {
         type: 'category',
         axisLabel: {
@@ -141,6 +223,109 @@ export default {
           alignWithLabel: true
         },
         z: 10
+      }
+    },
+    getYAxis () {
+      return {
+        type: 'value',
+        axisLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          textStyle: {
+            color: '#999'
+          }
+        }
+      }
+    }, 
+    getDataZoom (xSlider, ySlider, xInside, yInside) {
+      let dataZoom = []
+      if (xSlider) {
+        dataZoom.push({
+          type: 'slider',
+          show: true,
+          xAxisIndex: [0],
+          start: 0,
+          end: 30
+        })
+      }
+      if (ySlider) {
+        dataZoom.push({
+          type: 'slider',
+          show: true,
+          yAxisIndex: [0],
+          start: 0,
+          end: 30
+        })
+      }
+      if (xInside) {
+        dataZoom.push({
+          type: 'inside',
+          xAxisIndex: [0],
+          start: 0,
+          end: 30
+        })
+      }
+      if (yInside) {
+        dataZoom.push({
+          type: 'inside',
+          yAxisIndex: [0],
+          start: 0,
+          end: 30
+        })
+      }
+      return dataZoom
+    },
+    getBarseries () {
+      let series = []
+      let colLen = this.dataset[0].length -1
+
+      for (let i=0; i< colLen; i++) {
+        series.push({type: 'bar'})
+      }
+      return series
+    },
+    getLineseries () {
+      let series = []
+      let colLen = this.dataset[0].length -1
+
+      for (let i=0; i< colLen; i++) {
+        series.push({type: 'line'})
+      }
+      return series
+    },
+    getPieseries (isRose) {
+      let pieData = []
+      for(let i=1; i<this.dataset.length; i++) {
+        pieData.push({value:(this.dataset[i])[1],name:(this.dataset[i])[0]})
+      }
+
+      let ret = {
+          type: 'pie',
+          radius: '75%',
+          data: pieData
+        }
+      if (isRose === 'rose') {
+        ret.radius = ['20%', '75%']
+        ret.roseType = 'area'
+      }
+      return ret
+    },
+    getMapSeries () {
+      let mapData = []
+      for(let i=1; i<this.dataset.length; i++) {
+        mapData.push({value:(this.dataset[i])[1],name:(this.dataset[i])[0]})
+      }
+
+      return {
+        name: '不知道干嘛用的',
+        type: 'map',
+        mapType: 'china',
+        selectedMode: 'single',
+        data: mapData
       }
     }
   }
