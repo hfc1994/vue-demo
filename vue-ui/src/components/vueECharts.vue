@@ -12,8 +12,6 @@
 /* eslint-disable*/
 import charts from 'vue-echarts'
 import {api} from './fetchData.js'
-import cityJson from '../assets/citygeo.js'
-const cityProvinceMapping = require('../assets/citygeo.js');
 const cityGeo = require('../assets/citygeo.js');
 import cityGeo2 from '../assets/china.json'
 
@@ -39,8 +37,8 @@ export default {
         'pie',  
         'rose', // pie
         'map',
-        'lineStack',  // 堆叠区域图line
         'heatmap',
+        'lineStack',  // 堆叠区域图line
         'treemap',  // 矩形树图
         'wordcloud',
         'radar',
@@ -109,6 +107,13 @@ export default {
         option.title = this.getTitle('地图')
         option.tooltip = this.getToolTip('item')
         option.series = this.getMapSeries()
+      } else if (this.chartType === 'heatmap') {
+        option.title = this.getTitle('热力图')
+        option.tooltip = this.getToolTip('item')
+        option.legend = this.getHeatmapLegend()
+        option.visualMap = this.getVisualMap()
+        option.geo = this.getHeatmapGeo()
+        option.series = this.getHeatmapSeries()
       }
 
       this.optionData = option
@@ -326,6 +331,83 @@ export default {
         mapType: 'china',
         selectedMode: 'single',
         data: mapData
+      }
+    },
+    getHeatmapSeries () {
+      let mapData = []
+
+      for (let i=1; i<this.dataset.length; i++) {
+        let data = this.dataset[i]
+        let axisData = cityGeo.default.cityGeo[this.dataset[i][0]][0]
+        mapData.push({name: this.dataset[i][0], value: axisData.concat(this.dataset[i][1])})
+      }
+
+      return {
+        name: '不知道干嘛用的',
+        type: 'heatmap',
+        coordinateSystem: 'geo',
+        data: mapData,
+        label: {
+          normal: {
+            formatter: '{b}',
+            posotion: 'right',
+            show: true
+          },
+          emphasis: {
+            show: true
+          }
+        },
+        itemStyle: {
+          normal: {
+            color: '#fff'
+          }
+        }
+      }
+    },
+    getHeatmapGeo () {
+      return {
+        map: "china",
+        roam: true,
+        label: {
+          emphasis: {
+            show: true,
+            color: '#fff'
+          }
+        },
+        itemStyle: {
+          normal: {
+            areaColor: '#323c48',
+            borderColor: '#111'
+          },
+          emphasis: {
+            areaColor: '#2a333d'
+          }
+        }
+      }
+    },
+    getVisualMap () {
+      return {
+        show: true,
+        min: 0,
+        max: 100,
+        calculable: true,
+        inRange: {
+          color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+        },
+        textStyle: {
+          color: '#fff'
+        }
+      }
+    },
+    getHeatmapLegend () {
+      return {
+        orient: 'vertical',
+        y: 'bottom',
+        x: 'right',
+        data: ['heatmap---'],
+        textStyle: {
+          color: '#fff'
+        }
       }
     }
   }

@@ -1,11 +1,13 @@
 <template>
   <div id="graph">
     <span>图表名称：{{theName}}</span>
-    <el-button size="mini" @click="changeChartType">切换图表类型</el-button>
+    <!-- <el-button size="mini" @click="changeChartType">切换图表类型</el-button> -->
+     <el-button size="mini" @click="changeChartType('sub')">上一个</el-button>
+    <el-button size="mini" @click="changeChartType('add')">下一个</el-button>
     <el-button size="mini" @click="handleZoom">{{buttonText}}</el-button>
     <ve-chart :title="title" :data="chartData" :settings="chartSetting" ref="chartNode" style="width:100%;" v-if="chartType === 'normal'"></ve-chart>
     <ve-map :data="chartData" :settings="chartSetting" style="width: 100%;" v-else-if="chartType === 'map'"></ve-map>
-    <ve-heatmap :data='chartData' :settings="chartSetting" style="width: 100%;" v-else-if="chartType === 'heatmap'"></ve-heatmap>
+    <ve-heatmap :data='heatmapData' :tooltip-visible="true" :settings="chartSetting" style="width: 100%;" v-else-if="chartType === 'heatmap'"></ve-heatmap>
     <ve-wordcloud :data="chartWordData" :settings="chartSetting" ref="chartNode" style="width:100%;" v-else-if="chartType === 'wordcloud'"></ve-wordcloud>
     <ve-gauge :data="chartData" :settings="chartSetting" ref="chartNode" style="width:100%;" v-else-if="chartType === 'gauge'"></ve-gauge>
     <ve-scatter :data="chartData" :settings="chartSetting" ref="chartNode" style="width:100%;" v-else-if="chartType === 'scatter'"></ve-scatter>
@@ -15,6 +17,7 @@
 <script>
 /* eslint-disable*/
 import {api} from './fetchData.js'
+const cityGeo = require('../assets/citygeo.js');
 
 export default {
   name: 'eleGraph',
@@ -27,8 +30,8 @@ export default {
         'pie',
         'rose',
         'map',
-        'lineStack',  // 堆叠区域图
         'heatmap',
+        'lineStack',  // 堆叠区域图
         // '矩形树图暂时没有'，
         'wordcloud',
         'radar',
@@ -50,6 +53,7 @@ export default {
       chartType: 'normal',
       theName: '',
       chartWordData: {}, // 词云使用的数据对象
+      heatmapData: {},  // 热力图使用的数据对象
       title: {}
     }
   },
@@ -75,13 +79,22 @@ export default {
     })
   },
   methods: {
-    changeChartType: function (){
+    changeChartType: function (operator){
       this.chartType = 'normal'
-      if (this.typeIndex <= this.typeArray.length - 2) {
-        this.typeIndex++
-      } else {
-        this.typeIndex = 0
+      switch (operator){
+        case 'add':
+          this.typeIndex++
+          if (this.typeIndex === this.typeArray.length) {
+            this.typeIndex = 0
+          }
+          break
+        case 'sub':
+          this.typeIndex--
+          if (this.typeIndex === -1) {
+            this.typeIndex = this.typeArray.length-1
+          }
       }
+      
       this.chartSetting = {}
       this.theName = this.typeArray[this.typeIndex] 
       this.chartSetting.type = this.theName
@@ -111,8 +124,13 @@ export default {
           type: 'map',
           geo: {
             label: {
+              normal: {
+                show: true,
+                color: '#fff'
+              },
               emphasis: {
-                show: false
+                show: true,
+                color: '58b4ae'
               }
             },
             itemStyle: {
@@ -124,7 +142,39 @@ export default {
                 areaColor: '#2a333d'
               }
             }
+          },
+          label: {
+            normal: {
+              formatter: '{b}',
+              position: 'right',
+              show: false
+            },
+            emphasis: {
+              show: true
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: '#ddb926'
+            }
+          },
+          tooltip: {
+            trigger: 'item'
           }
+        }
+        let mapGeoData = []
+        for (let j=0; j<this.rows.length; j++) {
+          let mapProvinceData = {}
+          let provice = (this.rows[j])['省份']
+          let area = (this.rows[j])['绿化面积']
+
+          let axisData = cityGeo.default.cityGeo[provice][0]
+          mapGeoData.push({'lat':axisData[0], 'lng':axisData[1], '绿化面积': area})
+        }
+
+        this.heatmapData = {
+          columns: ['lat', 'lng', '绿化面积'],
+          rows: mapGeoData
         }
       } else if (this.theName === 'wordcloud') {
         this.chartType = 'wordcloud'
