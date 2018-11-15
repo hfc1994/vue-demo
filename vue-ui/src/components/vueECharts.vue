@@ -1,5 +1,5 @@
 <template>
-  <div id="baiduGraph">
+  <div :id="chartId" class="baiduGraph">
     <span>图表名称：{{chartType}}</span>
     <el-button size="mini" @click="changeChartType(false,'sub')">上一个</el-button>
     <el-button size="mini" @click="changeChartType(false,'add')">下一个</el-button>
@@ -20,6 +20,7 @@ charts.registerMap('china', cityGeo2)
 export default {
   name: 'vueECharts',
   components: {charts},
+  props: ['index'],
   data () {
     return {
       buttonText: '放大',
@@ -51,7 +52,11 @@ export default {
         'graph', // 关系图
         'waterfall' // 瀑布图
         ],
+      chartId: 'baiduGraph'
     }
+  },
+  created: function (){
+    this.chartId = this.chartId + this.index
   },
   mounted: function () {
     api.getMockDataset().then(res => {
@@ -415,9 +420,10 @@ export default {
 </script>
 
 <style>
-#baiduGraph {
+.baiduGraph {
   height: 400px;
   width: 100%;
+  margin-top: 20px;
 }
 
 .echarts {
