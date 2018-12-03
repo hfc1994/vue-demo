@@ -20,3 +20,4 @@ selenium-debug.log
 /vue-ui/test
 /data-service/logs
 /logs
+*.iml

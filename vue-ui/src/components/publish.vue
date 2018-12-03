@@ -62,7 +62,7 @@
     <el-dialog title="百度ECharts封装库" :visible.sync="dialogVisible2" id="graphDialog2"
                 :width="dialogWidth2">
       <vue-e-charts @zoomEvent="handleChildZoom2" :index="1"></vue-e-charts>
-      <vue-e-charts @zoomEvent="handleChildZoom2" :index="2"></vue-e-charts>
+      <!-- <vue-e-charts @zoomEvent="handleChildZoom2" :index="2"></vue-e-charts> -->
     </el-dialog>
   </div>
 </template>

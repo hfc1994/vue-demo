@@ -17,7 +17,8 @@
 <script>
 /* eslint-disable*/
 import {api} from './fetchData.js'
-const cityGeo = require('../assets/citygeo.js');
+import cities from 'echarts/map/json/china-cities'
+import china from 'echarts/map/json/china'
 
 export default {
   name: 'eleGraph',
@@ -54,7 +55,8 @@ export default {
       theName: '',
       chartWordData: {}, // 词云使用的数据对象
       heatmapData: {},  // 热力图使用的数据对象
-      title: {}
+      title: {},
+      geo: {} // 地理信息
     }
   },
   created () {
@@ -78,7 +80,18 @@ export default {
       console.log(err)
     })
   },
+  mounted: function() {
+    this.initGeo()
+  },
   methods: {
+    initGeo () {
+      cities.features.forEach(city => {
+        this.geo[city.properties.name] = city.properties.cp
+      })
+      china.features.forEach(province => {
+        this.geo[province.properties.name] = province.properties.cp
+      })
+    },
     changeChartType: function (operator){
       this.chartType = 'normal'
       switch (operator){
@@ -168,7 +181,7 @@ export default {
           let provice = (this.rows[j])['省份']
           let area = (this.rows[j])['绿化面积']
 
-          let axisData = cityGeo.default.cityGeo[provice][0]
+          let axisData = this.geo[provice]
           mapGeoData.push({'lat':axisData[0], 'lng':axisData[1], '绿化面积': area})
         }
 

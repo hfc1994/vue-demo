@@ -4,18 +4,18 @@
     <el-button size="mini" @click="changeChartType(false,'sub')">上一个</el-button>
     <el-button size="mini" @click="changeChartType(false,'add')">下一个</el-button>
     <el-button size="mini" @click="handleZoom">{{buttonText}}</el-button>
-    <charts :options="optionData" :auto-resize="true"></charts>
+    <charts :options="optionData" :auto-resize="true" ref='baiduecharts'></charts>
   </div>
 </template>
 
 <script>
 /* eslint-disable*/
-import charts from 'vue-echarts'
+import charts from 'vue-echarts/components/ECharts'
 import {api} from './fetchData.js'
-const cityGeo = require('../assets/citygeo.js');
-import cityGeo2 from '../assets/china.json'
-
-charts.registerMap('china', cityGeo2)
+import 'echarts-wordcloud'
+import 'echarts/map/js/china'
+import cities from 'echarts/map/json/china-cities'
+import china from 'echarts/map/json/china'
 
 export default {
   name: 'vueECharts',
@@ -39,9 +39,9 @@ export default {
         'rose', // pie
         'map',
         'heatmap',
+        'wordcloud',
         'lineStack',  // 堆叠区域图line
         'treemap',  // 矩形树图
-        'wordcloud',
         'radar',
         'gauge',  // 仪表盘
         'funnel', // 漏斗图
@@ -52,7 +52,8 @@ export default {
         'graph', // 关系图
         'waterfall' // 瀑布图
         ],
-      chartId: 'baiduGraph'
+      chartId: 'baiduGraph',
+      geo: {} // 地理数据
     }
   },
   created: function (){
@@ -63,11 +64,20 @@ export default {
       this.dataset = res.data
 
       this.changeChartType(true)
+      this.initGeo()      
     }).catch(err => {
       console.error(err)
     })
   },
   methods: {
+    initGeo () {
+      cities.features.forEach(city => {
+        this.geo[city.properties.name] = city.properties.cp
+      })
+      china.features.forEach(province => {
+        this.geo[province.properties.name] = province.properties.cp
+      })
+    },
     changeChartType (fromMounted, operator) {
       if (!fromMounted) {
         switch (operator) {
@@ -119,6 +129,10 @@ export default {
         option.visualMap = this.getVisualMap()
         option.geo = this.getHeatmapGeo()
         option.series = this.getHeatmapSeries()
+      } else if (this.chartType === 'wordcloud') {
+        option.title = this.getTitle('词云')
+        option.tooltip = this.getToolTip('item')
+        option.series = this.getWordCloudSeries()
       }
 
       this.optionData = option
@@ -343,7 +357,7 @@ export default {
 
       for (let i=1; i<this.dataset.length; i++) {
         let data = this.dataset[i]
-        let axisData = cityGeo.default.cityGeo[this.dataset[i][0]][0]
+        let axisData = this.geo[this.dataset[i][0]]
         mapData.push({name: this.dataset[i][0], value: axisData.concat(this.dataset[i][1])})
       }
 
@@ -414,6 +428,25 @@ export default {
           color: '#fff'
         }
       }
+    },
+    getWordCloudSeries() {
+      return [{
+        type: 'wordCloud',
+        shape: 'circle',
+        left: 'center',
+        top: 'center',
+        width: '70%',
+        height: '80%',
+        sizeRange: [12, 60],
+        rotationRange: [-90, 90],
+        rotationStep: 45,
+        gridSize: 8,
+        drawOutOfBound: false,
+        data: [{name: 'qwer', value: 333},
+                {name: 'rfvb', value: 222},
+                {name: 'zxcv', value: 322}
+              ]
+      }]
     }
   }
 }
