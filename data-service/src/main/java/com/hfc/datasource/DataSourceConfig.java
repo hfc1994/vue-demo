@@ -1,5 +1,6 @@
 package com.hfc.datasource;
 
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -25,10 +26,12 @@ public class DataSourceConfig
 {
     @Bean(name = "doubanDataSource")
     @Primary
-    @ConfigurationProperties(prefix = "spring.datasource.hikari")
+//    @ConfigurationProperties(prefix = "spring.datasource.hikari")
+    @ConfigurationProperties(prefix = "spring.datasource.druid")
     public DataSource doubanDataSource()
     {
-        return DataSourceBuilder.create().build();
+        return DruidDataSourceBuilder.create().build();
+//        return DataSourceBuilder.create().build();
     }
 
     /**
