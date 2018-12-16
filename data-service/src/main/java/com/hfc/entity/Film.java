@@ -106,4 +106,23 @@ public class Film
     public void setUrl(String url) {
         this.url = url;
     }
+
+    private String getContent() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.id).append(this.oid).append(this.title)
+                .append(this.year).append(this.type).append(this.star)
+                .append(this.directors).append(this.actors)
+                .append(this.commenter).append(this.duration).append(this.url);
+        return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+      return this.getContent().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.getContent();
+    }
 }

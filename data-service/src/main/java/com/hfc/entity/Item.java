@@ -60,4 +60,22 @@ public class Item
     public void setItem_pre(String item_pre) {
         this.item_pre = item_pre;
     }
+
+    // 考虑到字段会更新，那么每次都得重新组装一次
+    private String getContent() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.id).append(this.item).append(this.item_id)
+                .append(this.item_level).append(this.item_pre);
+        return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getContent().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.getContent();
+    }
 }

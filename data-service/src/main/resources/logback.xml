@@ -2,11 +2,8 @@
 <configuration>
 
     <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>info</level>
-        </filter>
-        <encoder charset="UTF-8">
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
@@ -53,6 +50,10 @@
     <!--打印异常错误日志-->
     <logger name="errorLog" level="error" additivity="false">
         <appender-ref ref="ERROR" />
+    </logger>
+
+    <logger name="STDOUT" level="debug" additivity="false">
+        <appender-ref ref="Console"/>
     </logger>
 
 </configuration>
