@@ -4,6 +4,8 @@ import com.hfc.dbOperations.dao.ItemListMapper;
 import com.hfc.entity.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,6 +16,7 @@ import java.util.List;
  *
  * @author hfc.
  */
+@CacheConfig(cacheNames = "database")
 @Service
 public class ItemService
 {
@@ -23,6 +26,7 @@ public class ItemService
     @Resource
     private ItemListMapper itemListMapper;
 
+    @Cacheable
     public List<Item> queryAllItem()
     {
         List<Item> items = null;

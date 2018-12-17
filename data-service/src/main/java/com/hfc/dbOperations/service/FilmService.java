@@ -4,6 +4,8 @@ import com.hfc.dbOperations.dao.FilmMapper;
 import com.hfc.entity.Film;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,6 +24,8 @@ import java.util.Map;
  * 0表示失败
  * -1表示异常
  */
+
+@CacheConfig(cacheNames = "database")
 @Service
 public class FilmService
 {
@@ -68,6 +72,7 @@ public class FilmService
      * @param numLimit 当某年电影数量少于这个指定阈值时被归为others
      * @return
      */
+    @Cacheable
     public List<Map<String, String>> queryFilmGroupByYear(int numLimit)
     {
         List<Map<String, String>> result = null;
@@ -116,6 +121,7 @@ public class FilmService
      * 这里默认做常见的12种类型
      * @return 各类型电影数量
      */
+    @Cacheable
     public List<Map<String, String>> queryFilmByType()
     {
         //初始化赋初始值
@@ -163,6 +169,7 @@ public class FilmService
      * 这里默认从2到10分分成8个档次[2-3),[3-4),[4-5),[5-6),[6-7),[7-8),[8-9),[9-10)
      * @return
      */
+    @Cacheable
     public List<Map<String,String>> queryFilmByStar()
     {
         ArrayList<Map<String,String>> lm = new ArrayList<>(8);
