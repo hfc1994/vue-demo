@@ -12,6 +12,9 @@
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
           style="margin-left: 0px; margin-top: 15px" title="任务2" @click="showDialog2">
         </el-button>
+        <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
+          style="margin-left: 0px; margin-top: 15px" title="任务3" @click="showDialog3">
+        </el-button>
         <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-more"
           style="margin-left: 0px; margin-top: 15px;background-color: rgba(255, 255, 255, 0.57)" @click="popMsgBox" title="弹窗">
         </el-button>
@@ -64,6 +67,10 @@
       <vue-e-charts @zoomEvent="handleChildZoom2" :index="1"></vue-e-charts>
       <!-- <vue-e-charts @zoomEvent="handleChildZoom2" :index="2"></vue-e-charts> -->
     </el-dialog>
+    <el-dialog title="自定义测试demo" :visible.sync="dialogVisible3" id="graphDialog3"
+                width="60%">
+      <test-charts></test-charts>
+    </el-dialog>
   </div>
 </template>
 
@@ -74,10 +81,11 @@ import model from './model.vue'
 import {api} from './fetchData.js'
 import eleGraph from './eleGraph.vue'
 import vueECharts from './vueECharts.vue'
+import testCharts from './testCharts.vue'
 
 export default {
   name: 'publish',
-  components: {modelView, model, eleGraph, vueECharts},
+  components: {modelView, model, eleGraph, vueECharts, testCharts},
   data () {
     return {
       packDisabled: false,
@@ -101,6 +109,7 @@ export default {
       dialogVisible: false,
       dialogWidth: '60%',
       dialogVisible2: false,
+      dialogVisible3: false,
       dialogWidth2: '60%'
     }
   },
@@ -218,6 +227,9 @@ export default {
       this.dialogVisible2 = true
       this.dialogWidth2 = '60%'
     },
+    showDialog3: function () {
+      this.dialogVisible3 = true
+    }
   }
 }
 </script>
