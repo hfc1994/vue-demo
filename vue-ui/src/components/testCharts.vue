@@ -6,16 +6,16 @@
 
 <script>
 /* eslint-disable*/
-import charts from "vue-echarts/components/ECharts"
-import "echarts/map/js/china"
-import cities from "echarts/map/json/china-cities"
-import china from "echarts/map/json/china"
-import { dataOfNameKey, dataOfCodeKey, metaData, star} from "../assets/coord.js"
+import charts from 'vue-echarts/components/ECharts'
+import 'echarts/map/js/china'
+import cities from 'echarts/map/json/china-cities'
+import china from 'echarts/map/json/china'
+import { dataOfNameKey, dataOfCodeKey, metaData, star} from '../assets/coord.js'
 
 export default {
-  name: "testCharts",
+  name: 'testCharts',
   components: { charts },
-  props: ["index"],
+  props: ['index'],
   data() {
     return {
       optionData: {},
@@ -47,29 +47,29 @@ export default {
       const that = this
       let option = {
         title: {
-          left: "center",
-          text: "地图",
+          left: 'center',
+          text: '地图',
           top: 20,
           textStyle: {
-            color: "#ccc"
+            color: '#ccc'
           }
         },
         tooltip: {
-          trigger: "item",
+          trigger: 'item',
           formatter: function(val) {
-            let content = val.name + " / " + val.value[2] + "<br/>" 
+            let content = val.name + ' / ' + val.value[2] + '<br/>' 
               + that.paramName1 + ':' + val.value[3]
 
             if (val.value[4] !== undefined) {
-              content = content + "<br/>" + that.paramName2 + ':'  + val.value[4]
+              content = content + '<br/>' + that.paramName2 + ':'  + val.value[4]
             }
             return content
           },
-          extraCssText: "text-align: left"
+          extraCssText: 'text-align: left'
         },
         geo: {
           show: true,
-          map: "china",
+          map: 'china',
           label: {
             normal: {
               show: false
@@ -79,10 +79,10 @@ export default {
             }
           },
           roam: true,
-          selectedMode: "single",
+          selectedMode: 'single',
           itemStyle: {
-            areaColor: "#f3f3f3",
-            borderColor: "#00effc",
+            areaColor: '#f3f3f3',
+            borderColor: '#00effc',
             borderWidth: 1,
             label: {
               show: false
@@ -93,7 +93,7 @@ export default {
               show: false
             },
             itemStyle: {
-              areaColor: "#f3f3f3"
+              areaColor: '#f3f3f3'
             }
           }
         },
