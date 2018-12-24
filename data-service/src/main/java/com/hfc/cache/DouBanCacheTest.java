@@ -25,47 +25,47 @@ public class DouBanCacheTest {
     @Test
     public void test() throws InterruptedException {
         String result = null;
-        result = cache.select(sql);
+        result = cache.testSelect(sql);
         System.out.println(result);
 
-        result = cache.update(sql);
+        result = cache.testUpdate(sql);
         System.out.println(result);
 
-        result = cache.select(sql);
+        result = cache.testSelect(sql);
         System.out.println(result);
 
-        result = cache.delete(sql);
+        result = cache.testDelete(sql);
         System.out.println(result);
 
-        result = cache.select(sql);
+        result = cache.testSelect(sql);
         System.out.println(result);
 
-        result = cache.update(sql);
+        result = cache.testUpdate(sql);
         System.out.println(result);
 
-        result = cache.select(sql);
+        result = cache.testSelect(sql);
         System.out.println(result);
 
-        result = cache.select(sql);
+        result = cache.testSelect(sql);
         System.out.println(result);
 
         // 等待缓存过期
         TimeUnit.MINUTES.sleep(3);
 
-        result = cache.select(sql);
+        result = cache.testSelect(sql);
         System.out.println(result);
     }
 
     @Test
     public void testKeyGenerator() {
-        String result = cache.select();
+        String result = cache.testSelect();
         System.out.println(result);
 
-        result = cache.select();
+        result = cache.testSelect();
         System.out.println(result);
-        result = cache.select();
+        result = cache.testSelect();
         System.out.println(result);
-        result = cache.select();
+        result = cache.testSelect();
         System.out.println(result);
     }
 }

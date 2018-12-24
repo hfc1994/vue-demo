@@ -1,10 +1,18 @@
 package com.hfc.cache;
 
+import com.hfc.dbOperations.dao.BookMapper;
+import com.hfc.dbOperations.dao.FilmMapper;
+import com.hfc.dbOperations.dao.ItemListMapper;
+import com.hfc.entity.Item;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by user-hfc on 2018/12/15.
@@ -18,32 +26,32 @@ import org.springframework.stereotype.Repository;
 public class DatabaseCache {
 
     @CachePut
-    public String update(String sql) {
-        System.out.println("---update()执行了---" + sql);
+    public String testUpdate(String sql) {
+        System.out.println("---testUpdate()执行了---" + sql);
         return "update sql语句";
     }
 
     @Cacheable
-    public String save(String sql) {
-        System.out.println("---save()执行了---" + sql);
+    public String testSave(String sql) {
+        System.out.println("---testSave()执行了---" + sql);
         return "save sql语句";
     }
 
     @Cacheable
-    public String select(String sql) {
-        System.out.println("---select()执行了---" + sql);
+    public String testSelect(String sql) {
+        System.out.println("---testSelect()执行了---" + sql);
         return "select sql语句";
     }
 
     @CacheEvict
-    public String delete(String sql) {
-        System.out.println("---delete()执行了---" + sql);
+    public String testDelete(String sql) {
+        System.out.println("---testDelete()执行了---" + sql);
         return "delete sql语句";
     }
 
     @Cacheable
-    public String select() {
-        System.out.println("---没有参数的select()执行了---");
+    public String testSelect() {
+        System.out.println("---testSelect()执行了---");
         return "空的select语句";
     }
 }
