@@ -15,6 +15,9 @@
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
           style="margin-left: 0px; margin-top: 15px" title="任务3" @click="showDialog3">
         </el-button>
+        <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
+          style="margin-left: 0px; margin-top: 15px" title="任务4" @click="showDialog4">
+        </el-button>
         <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-more"
           style="margin-left: 0px; margin-top: 15px;background-color: rgba(255, 255, 255, 0.57)" @click="popMsgBox" title="弹窗">
         </el-button>
@@ -71,6 +74,9 @@
                 width="60%">
       <test-charts></test-charts>
     </el-dialog>
+    <el-dialog title="控制器" :visible.sync="dialogVisible4" id="svgTest" width="60%">
+      <control-tool :init-height="180" :init-width="180"></control-tool>
+    </el-dialog>
   </div>
 </template>
 
@@ -82,10 +88,18 @@ import {api} from './fetchData.js'
 import eleGraph from './eleGraph.vue'
 import vueECharts from './vueECharts.vue'
 import testCharts from './testCharts.vue'
+import controlTool from './controlTool.vue'
 
 export default {
   name: 'publish',
-  components: {modelView, model, eleGraph, vueECharts, testCharts},
+  components: {
+    modelView,
+    model,
+    eleGraph,
+    vueECharts,
+    testCharts,
+    controlTool,
+  },
   data () {
     return {
       packDisabled: false,
@@ -110,6 +124,7 @@ export default {
       dialogWidth: '60%',
       dialogVisible2: false,
       dialogVisible3: false,
+      dialogVisible4: false,
       dialogWidth2: '60%'
     }
   },
@@ -229,6 +244,9 @@ export default {
     },
     showDialog3: function () {
       this.dialogVisible3 = true
+    },
+    showDialog4: function () {
+      this.dialogVisible4 = true
     }
   }
 }

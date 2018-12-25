@@ -1,5 +1,6 @@
 <template>
   <div class="testCharts">
+    <control-tool @doControl="controlEvent" :init-size="120"></control-tool>
     <charts :options="optionData" :auto-resize="true"></charts>
   </div>
 </template>
@@ -11,10 +12,11 @@ import 'echarts/map/js/china'
 import cities from 'echarts/map/json/china-cities'
 import china from 'echarts/map/json/china'
 import { dataOfNameKey, dataOfCodeKey, metaData, star} from '../assets/coord.js'
+import controlTool from './controlTool.vue'
 
 export default {
   name: 'testCharts',
-  components: { charts },
+  components: { charts, controlTool},
   props: ['index'],
   data() {
     return {
@@ -78,6 +80,9 @@ export default {
               show: false
             }
           },
+          zoom: 1,
+          top: '15%',
+          left: '15%',
           roam: true,
           selectedMode: 'single',
           itemStyle: {
@@ -126,7 +131,7 @@ export default {
           }
         }]
       }
-      console.log(option)
+      // console.log(option)
       this.optionData = option
     },
     generateSeriesData(srcData) {
@@ -288,6 +293,40 @@ export default {
       })
       
       return array
+    },
+    controlEvent(type) {
+      switch(type) {
+        case 'magnify': 
+          this.optionData.geo.zoom += 0.2
+          break
+        case 'shrink':
+          this.optionData.geo.zoom -= 0.2
+          break
+        case 'up':
+          this.optionData.geo.top = this.calcGeoPosition(this.optionData.geo.top, 'sub')
+          break
+        case 'down':
+          this.optionData.geo.top = this.calcGeoPosition(this.optionData.geo.top, 'add')
+          break
+        case 'left':
+          this.optionData.geo.left = this.calcGeoPosition(this.optionData.geo.left, 'sub')
+          break
+        case 'right':
+          this.optionData.geo.left = this.calcGeoPosition(this.optionData.geo.left, 'add')
+          break
+        default:
+          console.log(type + '暂未支持')
+      }
+    },
+    calcGeoPosition(strVal, method) {
+      let digit = parseInt(strVal)
+      if (method === 'add') {
+        digit += 3
+      } else {
+        digit -= 3
+      }
+      
+      return digit + '%'
     }
   }
 }
