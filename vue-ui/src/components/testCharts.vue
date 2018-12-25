@@ -300,6 +300,10 @@ export default {
           this.optionData.geo.zoom += 0.2
           break
         case 'shrink':
+          if (this.optionData.geo.zoom <= 0.2) {
+            this.optionData.geo.zoom = 0.2
+            return
+          }
           this.optionData.geo.zoom -= 0.2
           break
         case 'up':
