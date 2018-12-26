@@ -86,19 +86,19 @@ export default {
           roam: true,
           selectedMode: 'single',
           itemStyle: {
-            areaColor: '#f3f3f3',
-            borderColor: '#00effc',
-            borderWidth: 1,
-            label: {
-              show: false
-            }
-          },
-          emphasis: {
-            label: {
-              show: false
+            normal: {
+              areaColor: '#f3f3f3',
+              borderColor: '#00effc',
+              borderWidth: 1,
+              label: {
+                show: false
+              }
             },
-            itemStyle: {
-              areaColor: '#f3f3f3'
+            emphasis: {
+              areaColor: '#f3f3f3',
+              label: {
+                show: false
+              }
             }
           }
         },
@@ -106,6 +106,8 @@ export default {
           name: '区域分布',
           type: 'scatter',
           coordinateSystem: 'geo',
+          symbol: 'pin',
+          symbolSize: 36,
           data: this.generateSeriesData(srcData),
           itemStyle: {
             normal: {
@@ -131,7 +133,7 @@ export default {
           }
         }]
       }
-      // console.log(option)
+      console.log(option)
       this.optionData = option
     },
     generateSeriesData(srcData) {
@@ -146,14 +148,14 @@ export default {
             data[1],
             data[4]
           ],
-          symbol: 'pin',
-          symbolSize: 36,
           label: {
-            show: true,
-            formatter: '{b}',
-            position: ['100%','100%'],
-            textStyle: {
-              color: '#000'
+            normal: {
+                show: true,
+                formatter: '{b}',
+                position: ['100%','100%'],
+                textStyle: {
+                  color: '#000'
+                }
             }
           }
         }
@@ -170,15 +172,15 @@ export default {
               data[4],
               data[5]
             ],
-            symbol: 'pin',
-            symbolSize: 36,
             label: {
-              show: true,
-              formatter: function(val) {
-                return val.value[4]
-              },
-              textStyle: {
-                color: '#fff'
+              normal: {
+                  show: true,
+                  formatter: function(val) {
+                    return val.value[4]
+                  },
+                  textStyle: {
+                    color: '#fff'
+                  }
               }
             }
           }
