@@ -7,13 +7,13 @@
           style="background-color: rgba(255, 255, 255, 0.57)" @click="changeTreeBar" title="收起">
         </el-button>
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
-          style="margin-left: 0px; margin-top: 15px" title="任务" @click="showDialog">
+          style="margin-left: 0px; margin-top: 15px" title="饿了么ECharts的VUE封装库" @click="showDialog">
         </el-button>
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
-          style="margin-left: 0px; margin-top: 15px" title="任务2" @click="showDialog2">
+          style="margin-left: 0px; margin-top: 15px" title="百度Echarts的VUE封装库" @click="showDialog2">
         </el-button>
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
-          style="margin-left: 0px; margin-top: 15px" title="任务3" @click="showDialog3">
+          style="margin-left: 0px; margin-top: 15px" title="自定义demo" @click="showDialog3">
         </el-button>
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
           style="margin-left: 0px; margin-top: 15px" title="任务4" @click="showDialog4">
