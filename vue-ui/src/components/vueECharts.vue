@@ -16,6 +16,7 @@ import 'echarts-wordcloud'
 import 'echarts/map/js/china'
 import cities from 'echarts/map/json/china-cities'
 import china from 'echarts/map/json/china'
+import {emotion} from './emotion'
 
 export default {
   name: 'vueECharts',
@@ -33,13 +34,13 @@ export default {
       dataset: [],
       columnsLength: 0,
       typeArray: [
+        'wordcloud',
         'histogram',  // bar
         'line',
         'pie',  
         'rose', // pie
         'map',
         'heatmap',
-        'wordcloud',
         'lineStack',  // 堆叠区域图line
         'treemap',  // 矩形树图
         'radar',
@@ -430,22 +431,49 @@ export default {
       }
     },
     getWordCloudSeries() {
+      let data = []
+      Object.keys(emotion).forEach(key => {
+        data.push({
+          name: key,
+          value: emotion[key]
+        })
+      })
+    
+      let mask = new Image()
+      // 同级目录下的rect.svg
+      // 实际的图形貌似会根据canvas的大小做拉伸
+       mask.src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0i5Zu+5bGCXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjAwIDIwMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe3N0cm9rZTojMDAwMDAwO3N0cm9rZS1taXRlcmxpbWl0OjEwO30NCgkuc3Qxe2ZpbGw6I0ZGRkZGRjtzdHJva2U6IzAwMDAwMDtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9DQo8L3N0eWxlPg0KPHJlY3QgY2xhc3M9InN0MCIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiLz4NCjxyZWN0IHg9IjUuNSIgeT0iNSIgY2xhc3M9InN0MSIgd2lkdGg9IjE4OS4zIiBoZWlnaHQ9IjE4OS44Ii8+DQo8cmVjdCB4PSI0Ni42IiB5PSI0Ni44IiBjbGFzcz0ic3QwIiB3aWR0aD0iOTkuOCIgaGVpZ2h0PSI5OS41Ii8+DQo8L3N2Zz4NCg=="
       return [{
         type: 'wordCloud',
-        shape: 'circle',
+        // shape: 'square',
+        maskImage: mask,
         left: 'center',
         top: 'center',
-        width: '70%',
-        height: '80%',
+        width: '90%',
+        height: '90%',
         sizeRange: [12, 60],
-        rotationRange: [-90, 90],
-        rotationStep: 45,
-        gridSize: 8,
+        rotationRange: [0, 0],
+        rotationStep: 0,
+        gridSize: 2,
         drawOutOfBound: false,
-        data: [{name: 'qwer', value: 333},
-                {name: 'rfvb', value: 222},
-                {name: 'zxcv', value: 322}
-              ]
+        data: data,
+        textStyle: {
+          normal: {
+            fontFamily: 'sans-serif',
+            fontWeight: 'bold',
+            // color: 'black',
+            // Color can be a callback function or a color string
+            color: function () {
+              // Random color
+              let color = Math.random() * 200
+              return 'rgb(' + [
+                  Math.round(color),
+                  Math.round(color),
+                  Math.round(color)
+              ].join(',') + ')';
+            }
+          }
+        }
       }]
     }
   }

@@ -18,6 +18,9 @@
         <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
           style="margin-left: 0px; margin-top: 15px" title="任务4" @click="showDialog4">
         </el-button>
+        <el-button type="primary" :disabled="taskDisabled" size="mini" :icon="taskIcon"
+          style="margin-left: 0px; margin-top: 15px" title="任务4" @click="showDialog5">
+        </el-button>
         <el-button type="primary" :disabled="packDisabled" size="mini" icon="el-icon-more"
           style="margin-left: 0px; margin-top: 15px;background-color: rgba(255, 255, 255, 0.57)" @click="popMsgBox" title="弹窗">
         </el-button>
@@ -77,6 +80,32 @@
     <el-dialog title="控制器" :visible.sync="dialogVisible4" id="svgTest" width="60%">
       <control-tool :init-height="180" :init-width="180"></control-tool>
     </el-dialog>
+    <el-dialog title="测试" :visible.sync="dialogVisible5" id="zujianTest" width="60%">
+      <el-col :span="11">
+        <el-date-picker type="datetimerange"
+          range-separator="至"
+          start-placeholder="开始"
+          end-placeholder="结束"
+          value-format="yyyy-MM-dd HH:mm:ss.SSS"
+          v-model="datetime"
+          :clearable="false"
+          size="mini"
+          style="width:100%;">
+        </el-date-picker>
+      </el-col>
+      <el-col>
+         <el-select v-if="item.type==='A'" v-model="item.value5[0]" clearable placeholder="请选择">
+           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+
+        <el-select v-else-if="item.type==='B'" v-model="item.value5" clearable multiple style="margin-left: 20px;" placeholder="请选择">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+        <el-button @click="click">kkk</el-button>
+      </el-col>
+    </el-dialog>
   </div>
 </template>
 
@@ -102,6 +131,7 @@ export default {
   },
   data () {
     return {
+      datetime: ['2019-02-12 14:09:30.123',''],
       packDisabled: false,
       taskDisabled: false,
       packIcon: 'el-icon-arrow-left',
@@ -125,7 +155,28 @@ export default {
       dialogVisible2: false,
       dialogVisible3: false,
       dialogVisible4: false,
-      dialogWidth2: '60%'
+      dialogVisible5: false,
+      dialogWidth2: '60%',
+      options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+      item: {
+        type: 'A',
+        value5: []
+      }
     }
   },
   created: function () {
@@ -137,6 +188,13 @@ export default {
     })
   },
   methods: {
+    click() {
+      if (this.item.type === 'A') {
+        this.item.type = 'B'
+      } else {
+        this.item.type = 'A'
+      }
+    },
     changeTreeBar: function () {
       if (this.packIcon === 'el-icon-arrow-left') {
         this.packIcon = 'el-icon-arrow-right'
@@ -247,7 +305,10 @@ export default {
     },
     showDialog4: function () {
       this.dialogVisible4 = true
-    }
+    },
+    showDialog5: function () {
+      this.dialogVisible5 = true
+    },
   }
 }
 </script>
